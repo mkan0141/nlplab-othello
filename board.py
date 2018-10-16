@@ -15,7 +15,7 @@ def show_board(board):
     print("  A B C D E F G H")
     x = -1
     y = 0
-    while y < 7:
+    while y < 8:
         while x < 8:
             if x == -1:
                 print(y+1, end="")
