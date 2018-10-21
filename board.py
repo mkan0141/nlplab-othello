@@ -32,141 +32,233 @@ def show_board(board):
         print()
         
 # 石をひっくり返す処理
+
 def reverse(color, x, y, board):
-    x1 = 0
-    y1 = 0
 
     if color == WHITE:
         board[x][y] = WHITE
 
-        while y1 < y:
-            if board[x][y1] == WHITE:
+        y1 = y - 1
+        while y1 + 1 > 0:
+            if board[x][y1] == NONE: 
+                y1 = -1           
+            elif board[x][y1] == WHITE:
                 y2 = y1 + 1
-                board[x][y2] = WHITE
-            y1 += 1 
-        y1 = 7
-        while y1 > y:
-            if board[x][y1] == WHITE:
+                y1 = -1
+                while y2 < y:
+                    board[x][y2] = WHITE
+                    y2 += 1
+            y1 -= 1
+        y1 = y + 1
+        while y1 - 1 < 7:
+            if board[x][y1] == NONE:
+                y1 = 7
+            elif board[x][y1] == WHITE:
                 y2 = y1 - 1
-                board[x][y2] = WHITE
-            y1 -= 1 
+                y1 = 7
+                while y2 > y:
+                    board[x][y2] = WHITE
+                    y2 -= 1
+            y1 += 1
 
-        while x1 < x:
-            if board[x1][y] == WHITE:
+        x1 = x - 1
+        while x1 + 1 > 0:
+            if board[x1][y] == NONE: 
+                x1 = -1  
+            elif board[x1][y] == WHITE:
                 x2 = x1 + 1
-                board[x2][y] = WHITE
-            x1 += 1 
-        x1 = 7
-        while x1 > x:
-            if board[x1][y] == WHITE:
-                x2 = x1 - 1
-                board[x2][y] = WHITE
+                x1 = -1
+                while x2 < x:
+                    board[x2][y] = WHITE
+                    x2 += 1
             x1 -= 1 
-        
+        x1 = x + 1
+        while x1 - 1 < 7:
+            if board[x1][y] == NONE: 
+                x1 = 7              
+            elif board[x1][y] == WHITE:
+                x2 = x1 - 1
+                x1 = 7
+                while x2 > x:
+                    board[x2][y] = WHITE
+                    x2 -= 1
+            x1 += 1
+
         x1 = x - 1
         y1 = y - 1
-        while x1 > -1:
-            if board[x1][y1] == WHITE:
+        while x1 + 1 > 0 and y1 + 1 > 0:
+            if board[x1][y1] == NONE: 
+                x1 = -1
+            elif board[x1][y1] == WHITE:
                 x2 = x1 + 1
                 y2 = y1 + 1
-                board[x2][y2] = WHITE
+                x1 = -1
+                while x2 < x:
+                    board[x2][y2] = WHITE
+                    x2 += 1
+                    y2 += 1
             x1 -= 1
-            y1 -= 1
+            y1 -= 1 
         x1 = x + 1
-        y1 = y + 1       
-        while x1 < 7:
-            if board[x1][y1] == WHITE:
+        y1 = y + 1
+        while x1 - 1 < 7 and y1 - 1 < 7:
+            if board[x1][y1] == NONE: 
+                x1 = 7
+            elif board[x1][y1] == WHITE:
                 x2 = x1 - 1
                 y2 = y1 - 1
-                board[x2][y2] = WHITE
+                x1 = 7
+                while x2 > x:
+                    board[x2][y2] = WHITE
+                    x2 -= 1
+                    y2 -= 1
             x1 += 1
             y1 += 1
-
+        
         x1 = x - 1
         y1 = y + 1
-        while x1 > -1:
-            if board[x1][y1] == WHITE:
+        while x1 + 1 > 0 and y1 - 1 < 7:
+            if board[x1][y1] == NONE: 
+                x1 = -1
+            elif board[x1][y1] == WHITE:
                 x2 = x1 + 1
                 y2 = y1 - 1
-                board[x2][y2] = WHITE
+                x1 = -1
+                while x2 < x:
+                    board[x2][y2] = WHITE
+                    x2 += 1
+                    y2 -= 1
             x1 -= 1
-            y1 += 1
+            y1 += 1 
         x1 = x + 1
-        y1 = y - 1       
-        while x1 < 7:
-            if board[x1][y1] == WHITE:
+        y1 = y - 1
+        while x1 - 1 < 7 and y1 + 1 > 0:
+            if board[x1][y1] == NONE: 
+                x1 = 7
+            elif board[x1][y1] == WHITE:
                 x2 = x1 - 1
                 y2 = y1 + 1
-                board[x2][y2] = WHITE
+                x1 = 7
+                while x2 > x:
+                    board[x2][y2] = WHITE
+                    x2 -= 1
+                    y2 += 1
             x1 += 1
             y1 -= 1
+
 
     elif color == BLACK:
         board[x][y] = BLACK
 
-        while y1 < y:
-            if board[x][y1] == BLACK:
+        y1 = y - 1
+        while y1 + 1 > 0:
+            if board[x][y1] == NONE: 
+                y1 = -1           
+            elif board[x][y1] == BLACK:
                 y2 = y1 + 1
-                board[x][y2] = BLACK
-            y1 += 1 
-        y1 = 7
-        while y1 > y:
-            if board[x][y1] == BLACK:
+                y1 = -1
+                while y2 < y:
+                    board[x][y2] = BLACK
+                    y2 += 1
+            y1 -= 1
+        y1 = y + 1
+        while y1 - 1 < 7:
+            if board[x][y1] == NONE:
+                y1 = 7
+            elif board[x][y1] == BLACK:
                 y2 = y1 - 1
-                board[x][y2] = BLACK
-            y1 -= 1 
+                y1 = 7
+                while y2 > y:
+                    board[x][y2] = BLACK
+                    y2 -= 1
+            y1 += 1
 
-        while x1 < x:
-            if board[x1][y] == BLACK:
+        x1 = x - 1
+        while x1 + 1 > 0:
+            if board[x1][y] == NONE: 
+                x1 = -1  
+            elif board[x1][y] == BLACK:
                 x2 = x1 + 1
-                board[x2][y] = BLACK
-            x1 += 1 
-        x1 = 7
-        while x1 > x:
-            if board[x1][y] == BLACK:
-                x2 = x1 - 1
-                board[x2][y] = BLACK
+                x1 = -1
+                while x2 < x:
+                    board[x2][y] = BLACK
+                    x2 += 1
             x1 -= 1 
+        x1 = x + 1
+        while x1 - 1 < 7:
+            if board[x1][y] == NONE: 
+                x1 = 7              
+            elif board[x1][y] == BLACK:
+                x2 = x1 - 1
+                x1 = 7
+                while x2 > x:
+                    board[x2][y] = BLACK
+                    x2 -= 1
+            x1 += 1
 
         x1 = x - 1
         y1 = y - 1
-        while x1 > -1:
-            if board[x1][y1] == BLACK:
+        while x1 + 1 > 0 and y1 + 1 > 0:
+            if board[x1][y1] == NONE: 
+                x1 = -1
+            elif board[x1][y1] == BLACK:
                 x2 = x1 + 1
                 y2 = y1 + 1
-                board[x2][y2] = BLACK
+                x1 = -1
+                while x2 < x:
+                    board[x2][y2] = BLACK
+                    x2 += 1
+                    y2 += 1
             x1 -= 1
-            y1 -= 1
+            y1 -= 1 
         x1 = x + 1
-        y1 = y + 1       
-        while x1 < 7:
-            if board[x1][y1] == BLACK:
+        y1 = y + 1
+        while x1 - 1 < 7 and y1 - 1 < 7:
+            if board[x1][y1] == NONE: 
+                x1 = 7
+            elif board[x1][y1] == BLACK:
                 x2 = x1 - 1
                 y2 = y1 - 1
-                board[x2][y2] = BLACK
+                x1 = 7
+                while x2 > x:
+                    board[x2][y2] = BLACK
+                    x2 -= 1
+                    y2 -= 1
             x1 += 1
             y1 += 1
-
+        
         x1 = x - 1
         y1 = y + 1
-        while x1 > -1:
-            if board[x1][y1] == BLACK:
+        while x1 + 1 > 0 and y1 - 1 < 7:
+            if board[x1][y1] == NONE: 
+                x1 = -1
+            elif board[x1][y1] == BLACK:
                 x2 = x1 + 1
                 y2 = y1 - 1
-                board[x2][y2] = BLACK
+                x1 = -1
+                while x2 < x:
+                    board[x2][y2] = BLACK
+                    x2 += 1
+                    y2 -= 1
             x1 -= 1
-            y1 += 1
+            y1 += 1 
         x1 = x + 1
-        y1 = y - 1       
-        while x1 < 7:
-            if board[x1][y1] == BLACK:
+        y1 = y - 1
+        while x1 - 1 < 7 and y1 + 1 > 0:
+            if board[x1][y1] == NONE: 
+                x1 = 7
+            elif board[x1][y1] == BLACK:
                 x2 = x1 - 1
                 y2 = y1 + 1
-                board[x2][y2] = BLACK
+                x1 = 7
+                while x2 > x:
+                    board[x2][y2] = BLACK
+                    x2 -= 1
+                    y2 += 1
             x1 += 1
             y1 -= 1
 
-    return board
+    return board  
     
         
 """
