@@ -32,7 +32,103 @@ def show_board(board):
         print()
         
 # 石をひっくり返す処理
+def reverse(color, x, y, board):
+    x1 = 0
+    y1 = 0
 
+    if color == WHITE:
+        board[x][y] = WHITE
+
+        while y1 < y:
+            if board[x][y1] == WHITE:
+                y2 = y1 + 1
+                board[x][y2] = WHITE
+            y1 += 1 
+        y1 = 7
+        while y1 > y:
+            if board[x][y1] == WHITE:
+                y2 = y1 - 1
+                board[x][y2] = WHITE
+            y1 -= 1 
+
+        while x1 < x:
+            if board[x1][y] == WHITE:
+                x2 = x1 + 1
+                board[x2][y] = WHITE
+            x1 += 1 
+        x1 = 7
+        while x1 > x:
+            if board[x1][y] == WHITE:
+                x2 = x1 - 1
+                board[x2][y] = WHITE
+            x1 -= 1 
+        
+        x1 = 0
+        y1 = 0
+        while x1 < x:
+            if board[x1][y1] == WHITE:
+                x2 = x1 + 1
+                y2 = y1 + 1
+                board[x2][y2] = WHITE
+            x1 += 1 
+            y1 += 1
+        x1 = 7
+        y1 = 7
+        while x1 > x:
+            if board[x1][y1] == WHITE:
+                x2 = x1 - 1
+                y2 = y1 - 1
+                board[x2][y2] = WHITE
+            x1 -= 1 
+            y2 -= 1       
+
+    elif color == BLACK:
+        board[x][y] = BLACK
+
+        while y1 < y:
+            if board[x][y1] == BLACK:
+                y2 = y1 + 1
+                board[x][y2] = BLACK
+            y1 += 1 
+        y1 = 7
+        while y1 > y:
+            if board[x][y1] == BLACK:
+                y2 = y1 - 1
+                board[x][y2] = BLACK
+            y1 -= 1 
+
+        while x1 < x:
+            if board[x1][y] == BLACK:
+                x2 = x1 + 1
+                board[x2][y] = BLACK
+            x1 += 1 
+        x1 = 7
+        while x1 > x:
+            if board[x1][y] == BLACK:
+                x2 = x1 - 1
+                board[x2][y] = BLACK
+            x1 -= 1 
+
+        x1 = 0
+        y1 = 0
+        while x1 < x:
+            if board[x1][y1] == BLACK:
+                x2 = x1 + 1
+                y2 = y1 + 1
+                board[x2][y2] = BLACK
+            x1 += 1 
+            y1 += 1
+        x1 = 7
+        y1 = 7
+        while x1 > x:
+            if board[x1][y1] == BLACK:
+                x2 = x1 - 1
+                y2 = y1 - 1
+                board[x2][y2] = BLACK
+            x1 -= 1 
+            y2 -= 1 
+
+    return board
     
         
 """
