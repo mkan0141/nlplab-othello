@@ -26,11 +26,11 @@ class Board():
                 if x == -1:
                     print(y+1, end="")
                 else:
-                    if self.board[x][y] == NONE:
+                    if self.board[y][x] == NONE:
                         print(" .", end="")
-                    elif self.board[x][y] == WHITE:
+                    elif self.board[y][x] == WHITE:
                         print(" o", end="")
-                    elif self.board[x][y] == BLACK:
+                    elif self.board[y][x] == BLACK:
                         print(" x", end="")
                 x += 1
             x = -1
@@ -39,7 +39,7 @@ class Board():
 
     # 石をひっくり返す処理
 
-    def reverse(self, color, x, y):
+    def reverse(self, color, y, x):
 
         if color == WHITE:
             self.board[x][y] = WHITE
@@ -337,26 +337,3 @@ class Board():
         elif w == b:
             return NONE
 
-
-"""
-下のmain関数は
-デバッグなどに使ってください.
-"""
-def main():
-    board = Board()
-    color = WHITE
-    while True:
-        if color == WHITE:
-            colot = BLACK
-        else:
-            color = WHITE
-
-        list = board.get_valid_position(color)
-        board.show_board()
-        print(list)
-
-
-
-# これより下はいじらない
-if __name__ == '__main__':
-    main()
