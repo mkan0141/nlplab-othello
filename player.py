@@ -1,4 +1,14 @@
 class Player():
+    def input_valid_position(self, valid_pos):
+        for pos in valid_pos:
+            pos[0] = chr(ord('A') + int(pos[0]))
+            pos[1] += 1
+
+            print('{}{}, '.format(pos[0], pos[1]), end='')
+        print()
+
+
+
     def put_stone(self):
         while True :
 
