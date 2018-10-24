@@ -12,5 +12,3 @@ def random_ai(list):
 
     return x,y
 
-
-random_ai(l)
