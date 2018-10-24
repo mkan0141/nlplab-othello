@@ -259,6 +259,55 @@ def reverse(color, x, y, board):
             y1 -= 1
 
     return board  
+
+
+#置ける場所リスト
+dx = [0,1,1,1,0,-1,-1,-1]
+dy = [1,1,0,-1,-1,-1,0,1]
+
+def ayasi(x,y,board,color):
+    aitecolor = NONE
+    if color == BLACK:
+        aitecolor = WHITE
+    else:
+        aitecolor = BLACK
+    for i in range(8):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        if nx >=0 and nx <8 and ny >= 0 and ny <8 and board[ny][nx] == aitecolor:
+            return True
+    return False
+
+def check(x,y,board,color):
+    aitecolor = NONE
+    if color == BLACK:
+        aitecolor = WHITE
+    else:
+        aitecolor = BLACK
+    for i in range(8):
+        nx = x + dx[i]
+        ny = y + dy[i]
+        if nx >=0 and nx <8 and ny >= 0 and ny <8 and board[ny][nx] == aitecolor:
+            while True:
+                nx += dx[i]
+                ny += dy[i]
+                if nx >=0 and nx <8 and ny >= 0 and ny <8 and board[ny][nx] == aitecolor:
+                    continue
+                elif nx >=0 and nx <8 and ny >= 0 and ny <8 and board[ny][nx] == color:
+                    return True
+                else:
+                    break
+    return False
+
+
+def okerubasyo(color, board):
+    list = []
+    for x in range(8):
+        for y in range(8):
+            if ayasi(x,y,board,color) == True:
+                if check(x,y,board,color) == True:
+                    list.append([x,y])
+    return list
     
         
 """
@@ -267,7 +316,8 @@ def reverse(color, x, y, board):
 """
 def main():
     board = init()
-
+    okeru = okerubasyo(BLACK, board)
+    print(okeru)
 
 # これより下はいじらない
 if __name__ == '__main__':
