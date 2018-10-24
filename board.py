@@ -23,14 +23,14 @@ def show_board(board):
                 if board[x][y] == NONE:
                     print(" .", end="")
                 elif board[x][y] == WHITE:
-                    print(" o", end="") 
+                    print(" o", end="")
                 elif board[x][y] == BLACK:
-                    print(" x", end="")               
+                    print(" x", end="")
             x += 1
         x = -1
         y += 1
         print()
-        
+
 # 石をひっくり返す処理
 
 def reverse(color, x, y, board):
@@ -40,8 +40,8 @@ def reverse(color, x, y, board):
 
         y1 = y - 1
         while y1 + 1 > 0:
-            if board[x][y1] == NONE: 
-                y1 = -1           
+            if board[x][y1] == NONE:
+                y1 = -1
             elif board[x][y1] == WHITE:
                 y2 = y1 + 1
                 y1 = -1
@@ -63,19 +63,19 @@ def reverse(color, x, y, board):
 
         x1 = x - 1
         while x1 + 1 > 0:
-            if board[x1][y] == NONE: 
-                x1 = -1  
+            if board[x1][y] == NONE:
+                x1 = -1
             elif board[x1][y] == WHITE:
                 x2 = x1 + 1
                 x1 = -1
                 while x2 < x:
                     board[x2][y] = WHITE
                     x2 += 1
-            x1 -= 1 
+            x1 -= 1
         x1 = x + 1
         while x1 - 1 < 7:
-            if board[x1][y] == NONE: 
-                x1 = 7              
+            if board[x1][y] == NONE:
+                x1 = 7
             elif board[x1][y] == WHITE:
                 x2 = x1 - 1
                 x1 = 7
@@ -87,7 +87,7 @@ def reverse(color, x, y, board):
         x1 = x - 1
         y1 = y - 1
         while x1 + 1 > 0 and y1 + 1 > 0:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = -1
             elif board[x1][y1] == WHITE:
                 x2 = x1 + 1
@@ -98,11 +98,11 @@ def reverse(color, x, y, board):
                     x2 += 1
                     y2 += 1
             x1 -= 1
-            y1 -= 1 
+            y1 -= 1
         x1 = x + 1
         y1 = y + 1
         while x1 - 1 < 7 and y1 - 1 < 7:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = 7
             elif board[x1][y1] == WHITE:
                 x2 = x1 - 1
@@ -114,11 +114,11 @@ def reverse(color, x, y, board):
                     y2 -= 1
             x1 += 1
             y1 += 1
-        
+
         x1 = x - 1
         y1 = y + 1
         while x1 + 1 > 0 and y1 - 1 < 7:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = -1
             elif board[x1][y1] == WHITE:
                 x2 = x1 + 1
@@ -129,11 +129,11 @@ def reverse(color, x, y, board):
                     x2 += 1
                     y2 -= 1
             x1 -= 1
-            y1 += 1 
+            y1 += 1
         x1 = x + 1
         y1 = y - 1
         while x1 - 1 < 7 and y1 + 1 > 0:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = 7
             elif board[x1][y1] == WHITE:
                 x2 = x1 - 1
@@ -152,8 +152,8 @@ def reverse(color, x, y, board):
 
         y1 = y - 1
         while y1 + 1 > 0:
-            if board[x][y1] == NONE: 
-                y1 = -1           
+            if board[x][y1] == NONE:
+                y1 = -1
             elif board[x][y1] == BLACK:
                 y2 = y1 + 1
                 y1 = -1
@@ -175,19 +175,19 @@ def reverse(color, x, y, board):
 
         x1 = x - 1
         while x1 + 1 > 0:
-            if board[x1][y] == NONE: 
-                x1 = -1  
+            if board[x1][y] == NONE:
+                x1 = -1
             elif board[x1][y] == BLACK:
                 x2 = x1 + 1
                 x1 = -1
                 while x2 < x:
                     board[x2][y] = BLACK
                     x2 += 1
-            x1 -= 1 
+            x1 -= 1
         x1 = x + 1
         while x1 - 1 < 7:
-            if board[x1][y] == NONE: 
-                x1 = 7              
+            if board[x1][y] == NONE:
+                x1 = 7
             elif board[x1][y] == BLACK:
                 x2 = x1 - 1
                 x1 = 7
@@ -199,7 +199,7 @@ def reverse(color, x, y, board):
         x1 = x - 1
         y1 = y - 1
         while x1 + 1 > 0 and y1 + 1 > 0:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = -1
             elif board[x1][y1] == BLACK:
                 x2 = x1 + 1
@@ -210,11 +210,11 @@ def reverse(color, x, y, board):
                     x2 += 1
                     y2 += 1
             x1 -= 1
-            y1 -= 1 
+            y1 -= 1
         x1 = x + 1
         y1 = y + 1
         while x1 - 1 < 7 and y1 - 1 < 7:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = 7
             elif board[x1][y1] == BLACK:
                 x2 = x1 - 1
@@ -226,11 +226,11 @@ def reverse(color, x, y, board):
                     y2 -= 1
             x1 += 1
             y1 += 1
-        
+
         x1 = x - 1
         y1 = y + 1
         while x1 + 1 > 0 and y1 - 1 < 7:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = -1
             elif board[x1][y1] == BLACK:
                 x2 = x1 + 1
@@ -241,11 +241,11 @@ def reverse(color, x, y, board):
                     x2 += 1
                     y2 -= 1
             x1 -= 1
-            y1 += 1 
+            y1 += 1
         x1 = x + 1
         y1 = y - 1
         while x1 - 1 < 7 and y1 + 1 > 0:
-            if board[x1][y1] == NONE: 
+            if board[x1][y1] == NONE:
                 x1 = 7
             elif board[x1][y1] == BLACK:
                 x2 = x1 - 1
@@ -258,7 +258,7 @@ def reverse(color, x, y, board):
             x1 += 1
             y1 -= 1
 
-    return board  
+    return board
 
 
 #置ける場所リスト
@@ -300,7 +300,7 @@ def check(x,y,board,color):
     return False
 
 
-def okerubasyo(color, board):
+def get_valid_position(color, board):
     list = []
     for x in range(8):
         for y in range(8):
@@ -308,16 +308,41 @@ def okerubasyo(color, board):
                 if check(x,y,board,color) == True:
                     list.append([x,y])
     return list
-    
-        
+
+
+def who_won(board):
+    x = 0
+    y = 0
+    w = 0
+    b = 0
+
+    while y < 8:
+        while x < 8:
+            if board[x][y] == WHITE:
+                w += 1
+            elif board[x][y] == BLACK:
+                b += 1
+            x += 1
+        x = 0
+        y += 1
+
+    if w > b:
+        return WHITE
+    elif w < b:
+        return BLACK
+    elif w == b:
+        return NONE
+
+
 """
 下のmain関数は
 デバッグなどに使ってください.
 """
 def main():
     board = init()
-    okeru = okerubasyo(BLACK, board)
+    okeru = get_valid_position(BLACK, board)
     print(okeru)
+
 
 # これより下はいじらない
 if __name__ == '__main__':
