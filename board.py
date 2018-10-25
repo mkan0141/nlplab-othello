@@ -308,16 +308,16 @@ def okerubasyo(color, board):
                 if check(x,y,board,color) == True:
                     list.append([x,y])
     return list
-    
+
+def whiteblack(x):
+     return 1 if x==2 else 2 
         
 """
 下のmain関数は
 デバッグなどに使ってください.
 """
 def main():
-    board = init()
-    okeru = okerubasyo(BLACK, board)
-    print(okeru)
+    print(whiteblack(2))
 
 # これより下はいじらない
 if __name__ == '__main__':
