@@ -1,15 +1,20 @@
 class Player():
-    def input_valid_position(self, valid_pos):
+    def show_valid_position(self, valid_pos):
+        print('置ける場所[', end='')
         for pos in valid_pos:
             pos[0] = chr(ord('A') + int(pos[0]))
             pos[1] += 1
 
             print('{}{}, '.format(pos[0], pos[1]), end='')
-        print()
+        print(']')
+
+    def is_put(self,valid_pos, x, y):
+        d = [chr(ord('A') + x), y + 1]
+        return (d in valid_pos)
 
 
 
-    def put_stone(self):
+    def user_input(self, valid_pos):
         while True :
 
             Flag = 0
@@ -20,16 +25,20 @@ class Player():
             print("駒をどこに置くか指定してください．(A1 ~ H8)")
             place = input()
 
+            if not str.isdecimal(place[1:2]):
+                print("不正な入力値です：1桁目の数値は a ~ h, A ~ H の数値で入力してください．")
+                continue
+
             tate = int( place[1:2] )
             yoko = place[0:1]
 
             #縦の処理
             if 8 < tate or tate < 1:
                 print("不正な入力値です：2桁目の数値は 1 ~ 8 の数値で入力してください．")
+                continue
             else:
                 tate = tate - 1
                 Flag = 1
-
 
             #横の処理
             if yoko == "A" or yoko == "a":
@@ -57,8 +66,11 @@ class Player():
                 yoko = 7
                 Flag2 = 1
             else :
-                print("不正な入力値です：1桁目の入力は A ~ H　を入力してください．")
+                print("不正な入力値です：1桁目の入力は A ~ H を入力してください．")
 
+            if not self.is_put(valid_pos, yoko, tate):
+                print('その場所は置けません...')
+                continue
 
             if Flag == 1 and Flag2 == 1:
                 break
