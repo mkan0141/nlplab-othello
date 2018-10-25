@@ -9,12 +9,40 @@ dy = [1,1,0,-1,-1,-1,0,1]
 class Board():
     def __init__(self):
         self.board = [[NONE for i in range(8)]for j in range(8)]
+        self.turn = 0
+        self.stone_num = 4
+        self.is_slip = False
+        self.color = WHITE
 
 
     def init(self):
         self.board = [[NONE for i in range(8)]for j in range(8)]
         self.board[3][3] = self.board[4][4] = WHITE
         self.board[4][3] = self.board[3][4] = BLACK
+        self.turn = 0
+        self.stone_num = 4
+        self.color = WHITE
+        self.is_skip = False
+
+    def next_turn(self):
+        if self.color == WHITE:
+            self.color = BLACK
+        else:
+            self.color = WHITE
+        self.turn += 1
+
+    def is_pass(self, valid_pos):
+        return len(valid_pos) == 0
+
+    def whiteblack(self, x):
+        return WHITE if x==BLACK else BLACK
+
+
+    def get_color(self):
+        return self.color
+
+    def is_end(self):
+        return self.stone_num == 60
 
     # 盤面を表示する関数です.
     def show_board(self):
@@ -40,6 +68,7 @@ class Board():
     # 石をひっくり返す処理
 
     def reverse(self, color, y, x):
+        self.stone_num += 1
 
         if color == WHITE:
             self.board[x][y] = WHITE
@@ -270,11 +299,7 @@ class Board():
 
     #置ける場所リスト
     def ayasi(self, x, y, color):
-        aitecolor = NONE
-        if color == BLACK:
-            aitecolor = WHITE
-        else:
-            aitecolor = BLACK
+        aitecolor = whiteblack(color)
         for i in range(8):
             nx = x + dx[i]
             ny = y + dy[i]
@@ -283,11 +308,7 @@ class Board():
         return False
 
     def check(self, x, y, color):
-        aitecolor = NONE
-        if color == BLACK:
-            aitecolor = WHITE
-        else:
-            aitecolor = BLACK
+        aitecolor = whiteblack(color)
         for i in range(8):
             nx = x + dx[i]
             ny = y + dy[i]
@@ -308,6 +329,8 @@ class Board():
         list = []
         for x in range(8):
             for y in range(8):
+                if not self.board[y][x] == NONE:
+                    continue
                 if self.ayasi(x, y, color) == True:
                     if self.check(x, y, color) == True:
                         list.append([x,y])
@@ -335,5 +358,4 @@ class Board():
         elif w < b:
             return BLACK
         elif w == b:
-            return NONE
-
+            self.is_win = NONE
