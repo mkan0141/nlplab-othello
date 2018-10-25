@@ -15,7 +15,7 @@ def game():
 
     board.init()
     while not board.is_end():
-        print(board.is_end())
+        # print(board.is_end())
         color = board.get_color()
         # 盤面の表示
         board.show_board()
