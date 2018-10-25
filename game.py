@@ -1,6 +1,8 @@
 import numpy as np
 import board as B
 import player as P
+import AI as R
+
 NONE  = 0
 BLACK = 1
 WHITE = 2
@@ -8,10 +10,12 @@ WHITE = 2
 def game():
     board = B.Board()
     player = P.Player()
+    random_ai = R.RandomAI()
     color = WHITE
 
     board.init()
     while not board.is_end():
+        print(board.is_end())
         color = board.get_color()
         # 盤面の表示
         board.show_board()
@@ -25,6 +29,7 @@ def game():
         player.show_valid_position(valid_pos)
         # ユーザからの入力
         y, x = player.user_input(valid_pos)
+        # x, y = random_ai.random_ai(valid_pos)
         # ひっくり返す
         board.reverse(color, x, y)
         board.next_turn()
@@ -34,3 +39,4 @@ def game():
 
 if __name__ == '__main__':
     game()
+
