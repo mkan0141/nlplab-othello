@@ -3,6 +3,7 @@ import numpy as np
 NONE  = 0
 BLACK = 1
 WHITE = 2
+
 dx = [0,1,1,1,0,-1,-1,-1]
 dy = [1,1,0,-1,-1,-1,0,1]
 
@@ -13,6 +14,8 @@ class Board():
         self.stone_num = 4
         self.is_slip = False
         self.color = WHITE
+        self._pass = False
+        self.interruption = False
 
 
     def init(self):
@@ -22,7 +25,8 @@ class Board():
         self.turn = 0
         self.stone_num = 4
         self.color = WHITE
-        self.is_skip = False
+        self._pass = False
+        self.interruption = False
 
     def next_turn(self):
         if self.color == WHITE:
@@ -32,7 +36,12 @@ class Board():
         self.turn += 1
 
     def is_pass(self, valid_pos):
+        if self._pass and len(valid_pos) == 0:
+            self.self.interruption = True
         return len(valid_pos) == 0
+
+    def is_interruption(self):
+        return self.interruption
 
     def whiteblack(self, x):
         return WHITE if x==BLACK else BLACK
@@ -42,7 +51,8 @@ class Board():
         return self.color
 
     def is_end(self):
-        return self.stone_num == 60
+        # print(self.stone_num)
+        return self.stone_num == 64
 
     # 盤面を表示する関数です.
     def show_board(self):
@@ -69,6 +79,7 @@ class Board():
 
     def reverse(self, color, y, x):
         self.stone_num += 1
+        self._pass = False
 
         if color == WHITE:
             self.board[x][y] = WHITE
@@ -76,7 +87,7 @@ class Board():
             y1 = y - 1
             while y1 + 1 > 0:
                 if self.board[x][y1] == NONE:
-                    iy1 = -1
+                    y1 = -1
                 elif self.board[x][y1] == WHITE:
                     y2 = y1 + 1
                     y1 = -1
@@ -215,7 +226,6 @@ class Board():
                 elif self.board[x1][y] == BLACK:
                     x2 = x1 + 1
                     x1 = -1
-
                     while x2 < x:
                         self.board[x2][y] = BLACK
                         x2 += 1
@@ -294,12 +304,15 @@ class Board():
                 x1 += 1
                 y1 -= 1
 
+        
+
+
 
 
 
     #置ける場所リスト
     def ayasi(self, x, y, color):
-        aitecolor = whiteblack(color)
+        aitecolor = self.whiteblack(color)
         for i in range(8):
             nx = x + dx[i]
             ny = y + dy[i]
@@ -308,7 +321,7 @@ class Board():
         return False
 
     def check(self, x, y, color):
-        aitecolor = whiteblack(color)
+        aitecolor = self.whiteblack(color)
         for i in range(8):
             nx = x + dx[i]
             ny = y + dy[i]
