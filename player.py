@@ -9,7 +9,6 @@ class Player():
         print(']')
 
     def is_put(self,valid_pos, x, y):
-        print(x)
         d = [chr(ord('A') + x), y + 1]
         return (d in valid_pos)
 
