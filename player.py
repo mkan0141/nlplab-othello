@@ -9,6 +9,7 @@ class Player():
         print(']')
 
     def is_put(self,valid_pos, x, y):
+        print(x)
         d = [chr(ord('A') + x), y + 1]
         return (d in valid_pos)
 
@@ -67,6 +68,7 @@ class Player():
                 Flag2 = 1
             else :
                 print("不正な入力値です：1桁目の入力は A ~ H を入力してください．")
+                continue
 
             if not self.is_put(valid_pos, yoko, tate):
                 print('その場所は置けません...')
