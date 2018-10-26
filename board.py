@@ -37,8 +37,9 @@ class Board():
 
     def is_pass(self, valid_pos):
         if self._pass and len(valid_pos) == 0:
-            self.self.interruption = True
-        return len(valid_pos) == 0
+            self.interruption = True
+        self._pass = len(valid_pos) == 0
+        return self._pass
 
     def is_interruption(self):
         return self.interruption
@@ -304,7 +305,7 @@ class Board():
                 x1 += 1
                 y1 -= 1
 
-        
+
 
 
 

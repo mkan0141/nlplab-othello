@@ -23,6 +23,8 @@ def game():
         valid_pos = board.get_valid_position(color)
         # 打つ場所がなかったらパスする
         if board.is_pass(valid_pos):
+            if board.is_interruption():
+                break
             board.next_turn()
             continue
         # 打てる場所を出力
@@ -33,6 +35,7 @@ def game():
         # ひっくり返す
         board.reverse(color, x, y)
         board.next_turn()
+
     print(board.who_won())
 
 
