@@ -3,13 +3,15 @@ import numpy as np
 NONE  = 0
 BLACK = 1
 WHITE = 2
-
+BOARD_SIZE = 6
+BOARD_HARF_SIZE = int(BOARD_SIZE / 2)
 dx = [0,1,1,1,0,-1,-1,-1]
 dy = [1,1,0,-1,-1,-1,0,1]
 
 class Board():
+
     def __init__(self):
-        self.board = [[NONE for i in range(8)]for j in range(8)]
+        self.board = [[NONE for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
         self.turn = 0
         self.stone_num = 4
         self.is_slip = False
@@ -19,9 +21,9 @@ class Board():
 
 
     def init(self):
-        self.board = [[NONE for i in range(8)]for j in range(8)]
-        self.board[3][3] = self.board[4][4] = WHITE
-        self.board[4][3] = self.board[3][4] = BLACK
+        self.board = [[NONE for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
+        self.board[BOARD_HARF_SIZE - 1][BOARD_HARF_SIZE - 1] = self.board[BOARD_HARF_SIZE ][BOARD_HARF_SIZE] = WHITE
+        self.board[BOARD_HARF_SIZE][BOARD_HARF_SIZE - 1] = self.board[BOARD_HARF_SIZE - 1][BOARD_HARF_SIZE] = BLACK
         self.turn = 0
         self.stone_num = 4
         self.color = WHITE
@@ -53,15 +55,15 @@ class Board():
 
     def is_end(self):
         # print(self.stone_num)
-        return self.stone_num == 64
+        return self.stone_num == BOARD_SIZE * BOARD_SIZE
 
     # 盤面を表示する関数です.
     def show_board(self):
         print("  A B C D E F G H")
         x = -1
         y = 0
-        while y < 8:
-            while x < 8:
+        while y < BOARD_SIZE:
+            while x < BOARD_SIZE:
                 if x == -1:
                     print(y+1, end="")
                 else:
@@ -97,12 +99,12 @@ class Board():
                         y2 += 1
                 y1 -= 1
             y1 = y + 1
-            while y1 - 1 < 7:
+            while y1 - 1 < BOARD_SIZE - 1:
                 if self.board[x][y1] == NONE:
-                    y1 = 7
+                    y1 = BOARD_SIZE - 1
                 elif self.board[x][y1] == WHITE:
                     y2 = y1 - 1
-                    y1 = 7
+                    y1 = BOARD_SIZE - 1
                     while y2 > y:
                         self.board[x][y2] = WHITE
                         y2 -= 1
@@ -120,12 +122,12 @@ class Board():
                         x2 += 1
                 x1 -= 1
             x1 = x + 1
-            while x1 - 1 < 7:
+            while x1 - 1 < BOARD_SIZE - 1:
                 if self.board[x1][y] == NONE:
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                 elif self.board[x1][y] == WHITE:
                     x2 = x1 - 1
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                     while x2 > x:
                         self.board[x2][y] = WHITE
                         x2 -= 1
@@ -148,13 +150,13 @@ class Board():
                 y1 -= 1
             x1 = x + 1
             y1 = y + 1
-            while x1 - 1 < 7 and y1 - 1 < 7:
+            while x1 - 1 < BOARD_SIZE - 1 and y1 - 1 < BOARD_SIZE - 1:
                 if self.board[x1][y1] == NONE:
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                 elif self.board[x1][y1] == WHITE:
                     x2 = x1 - 1
                     y2 = y1 - 1
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                     while x2 > x:
                         self.board[x2][y2] = WHITE
                         x2 -= 1
@@ -164,7 +166,7 @@ class Board():
 
             x1 = x - 1
             y1 = y + 1
-            while x1 + 1 > 0 and y1 - 1 < 7:
+            while x1 + 1 > 0 and y1 - 1 < BOARD_SIZE - 1:
                 if self.board[x1][y1] == NONE:
                     x1 = -1
                 elif self.board[x1][y1] == WHITE:
@@ -179,13 +181,13 @@ class Board():
                 y1 += 1
             x1 = x + 1
             y1 = y - 1
-            while x1 - 1 < 7 and y1 + 1 > 0:
+            while x1 - 1 < BOARD_SIZE - 1 and y1 + 1 > 0:
                 if self.board[x1][y1] == NONE:
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                 elif self.board[x1][y1] == WHITE:
                     x2 = x1 - 1
                     y2 = y1 + 1
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                     while x2 > x:
                         self.board[x2][y2] = WHITE
                         x2 -= 1
@@ -209,12 +211,12 @@ class Board():
                         y2 += 1
                 y1 -= 1
             y1 = y + 1
-            while y1 - 1 < 7:
+            while y1 - 1 < BOARD_SIZE - 1:
                 if self.board[x][y1] == NONE:
-                    y1 = 7
+                    y1 = BOARD_SIZE - 1
                 elif self.board[x][y1] == BLACK:
                     y2 = y1 - 1
-                    y1 = 7
+                    y1 = BOARD_SIZE - 1
                     while y2 > y:
                         self.board[x][y2] = BLACK
                         y2 -= 1
@@ -232,12 +234,12 @@ class Board():
                         x2 += 1
                 x1 -= 1
             x1 = x + 1
-            while x1 - 1 < 7:
+            while x1 - 1 < BOARD_SIZE - 1:
                 if self.board[x1][y] == NONE:
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                 elif self.board[x1][y] == BLACK:
                     x2 = x1 - 1
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                     while x2 > x:
                         self.board[x2][y] = BLACK
                         x2 -= 1
@@ -260,13 +262,13 @@ class Board():
                 y1 -= 1
             x1 = x + 1
             y1 = y + 1
-            while x1 - 1 < 7 and y1 - 1 < 7:
+            while x1 - 1 < BOARD_SIZE - 1 and y1 - 1 < BOARD_SIZE - 1:
                 if self.board[x1][y1] == NONE:
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                 elif self.board[x1][y1] == BLACK:
                     x2 = x1 - 1
                     y2 = y1 - 1
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                     while x2 > x:
                         self.board[x2][y2] = BLACK
                         x2 -= 1
@@ -276,7 +278,7 @@ class Board():
 
             x1 = x - 1
             y1 = y + 1
-            while x1 + 1 > 0 and y1 - 1 < 7:
+            while x1 + 1 > 0 and y1 - 1 < BOARD_SIZE - 1:
                 if self.board[x1][y1] == NONE:
                     x1 = -1
                 elif self.board[x1][y1] == BLACK:
@@ -291,13 +293,13 @@ class Board():
                 y1 += 1
             x1 = x + 1
             y1 = y - 1
-            while x1 - 1 < 7 and y1 + 1 > 0:
+            while x1 - 1 < BOARD_SIZE - 1 and y1 + 1 > 0:
                 if self.board[x1][y1] == NONE:
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                 elif self.board[x1][y1] == BLACK:
                     x2 = x1 - 1
                     y2 = y1 + 1
-                    x1 = 7
+                    x1 = BOARD_SIZE - 1
                     while x2 > x:
                         self.board[x2][y2] = BLACK
                         x2 -= 1
@@ -317,7 +319,7 @@ class Board():
         for i in range(8):
             nx = x + dx[i]
             ny = y + dy[i]
-            if nx >=0 and nx <8 and ny >= 0 and ny <8 and self.board[ny][nx] == aitecolor:
+            if nx >=0 and nx < BOARD_SIZE and ny >= 0 and ny < BOARD_SIZE and self.board[ny][nx] == aitecolor:
                 return True
         return False
 
@@ -326,13 +328,13 @@ class Board():
         for i in range(8):
             nx = x + dx[i]
             ny = y + dy[i]
-            if nx >=0 and nx <8 and ny >= 0 and ny <8 and self.board[ny][nx] == aitecolor:
+            if nx >=0 and nx < BOARD_SIZE and ny >= 0 and ny < BOARD_SIZE and self.board[ny][nx] == aitecolor:
                 while True:
                     nx += dx[i]
                     ny += dy[i]
-                    if nx >=0 and nx <8 and ny >= 0 and ny <8 and self.board[ny][nx] == aitecolor:
+                    if nx >=0 and nx < BOARD_SIZE and ny >= 0 and ny < BOARD_SIZE and self.board[ny][nx] == aitecolor:
                         continue
-                    elif nx >=0 and nx <8 and ny >= 0 and ny <8 and self.board[ny][nx] == color:
+                    elif nx >=0 and nx < BOARD_SIZE and ny >= 0 and ny < BOARD_SIZE and self.board[ny][nx] == color:
                         return True
                     else:
                         break
@@ -341,8 +343,8 @@ class Board():
 
     def get_valid_position(self, color):
         list = []
-        for x in range(8):
-            for y in range(8):
+        for x in range(BOARD_SIZE):
+            for y in range(BOARD_SIZE):
                 if not self.board[y][x] == NONE:
                     continue
                 if self.ayasi(x, y, color) == True:
@@ -357,8 +359,8 @@ class Board():
         w = 0
         b = 0
 
-        while y < 8:
-            while x < 8:
+        while y < BOARD_SIZE:
+            while x < BOARD_SIZE:
                 if self.board[x][y] == WHITE:
                     w += 1
                 elif self.board[x][y] == BLACK:
