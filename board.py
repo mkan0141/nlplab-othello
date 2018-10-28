@@ -3,7 +3,7 @@ import numpy as np
 NONE  = 0
 BLACK = 1
 WHITE = 2
-BOARD_SIZE = 6
+BOARD_SIZE = 4
 BOARD_HARF_SIZE = int(BOARD_SIZE / 2)
 dx = [0,1,1,1,0,-1,-1,-1]
 dy = [1,1,0,-1,-1,-1,0,1]
@@ -81,231 +81,233 @@ class Board():
     # 石をひっくり返す処理
 
     def reverse(self, color, y, x):
-        self.stone_num += 1
-        self._pass = False
+            self.stone_num += 1
+            self._pass = False
 
-        if color == WHITE:
-            self.board[x][y] = WHITE
+            if color == WHITE:
+                self.board[x][y] = WHITE
 
-            y1 = y - 1
-            while y1 + 1 > 0:
-                if self.board[x][y1] == NONE:
-                    y1 = -1
-                elif self.board[x][y1] == WHITE:
-                    y2 = y1 + 1
-                    y1 = -1
-                    while y2 < y:
-                        self.board[x][y2] = WHITE
-                        y2 += 1
-                y1 -= 1
-            y1 = y + 1
-            while y1 - 1 < BOARD_SIZE - 1:
-                if self.board[x][y1] == NONE:
-                    y1 = BOARD_SIZE - 1
-                elif self.board[x][y1] == WHITE:
-                    y2 = y1 - 1
-                    y1 = BOARD_SIZE - 1
-                    while y2 > y:
-                        self.board[x][y2] = WHITE
-                        y2 -= 1
-                y1 += 1
+                y1 = y - 1
+                while y1 + 1 > 0:
+                    if self.board[x][y1] == NONE:
+                        y1 = -1
+                    elif self.board[x][y1] == WHITE:
+                        y2 = y1 + 1
+                        y1 = -1
+                        while y2 < y:
+                            self.board[x][y2] = WHITE
+                            y2 += 1
+                    y1 -= 1
+                y1 = y + 1
+                while y1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x][y1] == NONE:
+                        y1 = BOARD_SIZE - 1
+                    elif self.board[x][y1] == WHITE:
+                        y2 = y1 - 1
+                        y1 = BOARD_SIZE - 1
+                        while y2 > y:
+                            self.board[x][y2] = WHITE
+                            y2 -= 1
+                    y1 += 1
 
-            x1 = x - 1
-            while x1 + 1 > 0:
-                if self.board[x1][y] == NONE:
-                    x1 = -1
-                elif self.board[x1][y] == WHITE:
-                    x2 = x1 + 1
-                    x1 = -1
-                    while x2 < x:
-                        self.board[x2][y] = WHITE
-                        x2 += 1
-                x1 -= 1
-            x1 = x + 1
-            while x1 - 1 < BOARD_SIZE - 1:
-                if self.board[x1][y] == NONE:
-                    x1 = BOARD_SIZE - 1
-                elif self.board[x1][y] == WHITE:
-                    x2 = x1 - 1
-                    x1 = BOARD_SIZE - 1
-                    while x2 > x:
-                        self.board[x2][y] = WHITE
-                        x2 -= 1
-                x1 += 1
+                x1 = x - 1
+                while x1 + 1 > 0:
+                    if self.board[x1][y] == NONE:
+                        x1 = -1
+                    elif self.board[x1][y] == WHITE:
+                        x2 = x1 + 1
+                        x1 = -1
+                        while x2 < x:
+                            self.board[x2][y] = WHITE
+                            x2 += 1
+                    x1 -= 1
+                x1 = x + 1
+                while x1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x1][y] == NONE:
+                        x1 = BOARD_SIZE - 1
+                    elif self.board[x1][y] == WHITE:
+                        x2 = x1 - 1
+                        x1 = BOARD_SIZE - 1
+                        while x2 > x:
+                            self.board[x2][y] = WHITE
+                            x2 -= 1
+                    x1 += 1
 
-            x1 = x - 1
-            y1 = y - 1
-            while x1 + 1 > 0 and y1 + 1 > 0:
-                if self.board[x1][y1] == NONE:
-                    x1 = -1
-                elif self.board[x1][y1] == WHITE:
-                    x2 = x1 + 1
-                    y2 = y1 + 1
-                    x1 = -1
-                    while x2 < x:
-                        self.board[x2][y2] = WHITE
-                        x2 += 1
-                        y2 += 1
-                x1 -= 1
-                y1 -= 1
-            x1 = x + 1
-            y1 = y + 1
-            while x1 - 1 < BOARD_SIZE - 1 and y1 - 1 < BOARD_SIZE - 1:
-                if self.board[x1][y1] == NONE:
-                    x1 = BOARD_SIZE - 1
-                elif self.board[x1][y1] == WHITE:
-                    x2 = x1 - 1
-                    y2 = y1 - 1
-                    x1 = BOARD_SIZE - 1
-                    while x2 > x:
-                        self.board[x2][y2] = WHITE
-                        x2 -= 1
-                        y2 -= 1
-                x1 += 1
-                y1 += 1
+                x1 = x - 1
+                y1 = y - 1
+                while x1 + 1 > 0 and y1 + 1 > 0:
+                    if self.board[x1][y1] == NONE:
+                        x1 = -1
+                    elif self.board[x1][y1] == WHITE:
+                        x2 = x1 + 1
+                        y2 = y1 + 1
+                        x1 = -1
+                        while x2 < x:
+                            self.board[x2][y2] = WHITE
+                            x2 += 1
+                            y2 += 1
+                    x1 -= 1
+                    y1 -= 1
+                x1 = x + 1
+                y1 = y + 1
+                while x1 - 1 < BOARD_SIZE - 1 and y1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x1][y1] == NONE:
+                        x1 = BOARD_SIZE - 1
+                    elif self.board[x1][y1] == WHITE:
+                        x2 = x1 - 1
+                        y2 = y1 - 1
+                        x1 = BOARD_SIZE - 1
+                        while x2 > x:
+                            self.board[x2][y2] = WHITE
+                            x2 -= 1
+                            y2 -= 1
+                    x1 += 1
+                    y1 += 1
 
-            x1 = x - 1
-            y1 = y + 1
-            while x1 + 1 > 0 and y1 - 1 < BOARD_SIZE - 1:
-                if self.board[x1][y1] == NONE:
-                    x1 = -1
-                elif self.board[x1][y1] == WHITE:
-                    x2 = x1 + 1
-                    y2 = y1 - 1
-                    x1 = -1
-                    while x2 < x:
-                        self.board[x2][y2] = WHITE
-                        x2 += 1
-                        y2 -= 1
-                x1 -= 1
-                y1 += 1
-            x1 = x + 1
-            y1 = y - 1
-            while x1 - 1 < BOARD_SIZE - 1 and y1 + 1 > 0:
-                if self.board[x1][y1] == NONE:
-                    x1 = BOARD_SIZE - 1
-                elif self.board[x1][y1] == WHITE:
-                    x2 = x1 - 1
-                    y2 = y1 + 1
-                    x1 = BOARD_SIZE - 1
-                    while x2 > x:
-                        self.board[x2][y2] = WHITE
-                        x2 -= 1
-                        y2 += 1
-                x1 += 1
-                y1 -= 1
+                x1 = x - 1
+                y1 = y + 1
+                while x1 + 1 > 0 and y1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x1][y1] == NONE:
+                        x1 = -1
+                    elif self.board[x1][y1] == WHITE:
+                        x2 = x1 + 1
+                        y2 = y1 - 1
+                        x1 = -1
+                        while x2 < x:
+                            self.board[x2][y2] = WHITE
+                            x2 += 1
+                            y2 -= 1
+                    x1 -= 1
+                    y1 += 1
+                x1 = x + 1
+                y1 = y - 1
+                while x1 - 1 < BOARD_SIZE - 1 and y1 + 1 > 0:
+                    if self.board[x1][y1] == NONE:
+                        x1 = BOARD_SIZE - 1
+                    elif self.board[x1][y1] == WHITE:
+                        x2 = x1 - 1
+                        y2 = y1 + 1
+                        x1 = BOARD_SIZE - 1
+                        while x2 > x:
+                            self.board[x2][y2] = WHITE
+                            x2 -= 1
+                            y2 += 1
+                    x1 += 1
+                    y1 -= 1
 
 
-        elif color == BLACK:
-            self.board[x][y] = BLACK
+            elif color == BLACK:
+                self.board[x][y] = BLACK
 
-            y1 = y - 1
-            while y1 + 1 > 0:
-                if self.board[x][y1] == NONE:
-                    y1 = -1
-                elif self.board[x][y1] == BLACK:
-                    y2 = y1 + 1
-                    y1 = -1
-                    while y2 < y:
-                        self.board[x][y2] = BLACK
-                        y2 += 1
-                y1 -= 1
-            y1 = y + 1
-            while y1 - 1 < BOARD_SIZE - 1:
-                if self.board[x][y1] == NONE:
-                    y1 = BOARD_SIZE - 1
-                elif self.board[x][y1] == BLACK:
-                    y2 = y1 - 1
-                    y1 = BOARD_SIZE - 1
-                    while y2 > y:
-                        self.board[x][y2] = BLACK
-                        y2 -= 1
-                y1 += 1
+                y1 = y - 1
+                while y1 + 1 > 0:
+                    if self.board[x][y1] == NONE:
+                        y1 = -1
+                    elif self.board[x][y1] == BLACK:
+                        y2 = y1 + 1
+                        y1 = -1
+                        while y2 < y:
+                            self.board[x][y2] = BLACK
+                            y2 += 1
+                    y1 -= 1
+                y1 = y + 1
+                while y1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x][y1] == NONE:
+                        y1 = BOARD_SIZE - 1
+                    elif self.board[x][y1] == BLACK:
+                        y2 = y1 - 1
+                        y1 = BOARD_SIZE - 1
+                        while y2 > y:
+                            self.board[x][y2] = BLACK
+                            y2 -= 1
+                    y1 += 1
 
-            x1 = x - 1
-            while x1 + 1 > 0:
-                if self.board[x1][y] == NONE:
-                    x1 = -1
-                elif self.board[x1][y] == BLACK:
-                    x2 = x1 + 1
-                    x1 = -1
-                    while x2 < x:
-                        self.board[x2][y] = BLACK
-                        x2 += 1
-                x1 -= 1
-            x1 = x + 1
-            while x1 - 1 < BOARD_SIZE - 1:
-                if self.board[x1][y] == NONE:
-                    x1 = BOARD_SIZE - 1
-                elif self.board[x1][y] == BLACK:
-                    x2 = x1 - 1
-                    x1 = BOARD_SIZE - 1
-                    while x2 > x:
-                        self.board[x2][y] = BLACK
-                        x2 -= 1
-                x1 += 1
+                x1 = x - 1
+                while x1 + 1 > 0:
+                    if self.board[x1][y] == NONE:
+                        x1 = -1
+                    elif self.board[x1][y] == BLACK:
+                        x2 = x1 + 1
+                        x1 = -1
+                        while x2 < x:
+                            self.board[x2][y] = BLACK
+                            x2 += 1
+                    x1 -= 1
+                x1 = x + 1
+                while x1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x1][y] == NONE:
+                        x1 = BOARD_SIZE - 1
+                    elif self.board[x1][y] == BLACK:
+                        x2 = x1 - 1
+                        x1 = BOARD_SIZE - 1
+                        while x2 > x:
+                            self.board[x2][y] = BLACK
+                            x2 -= 1
+                    x1 += 1
 
-            x1 = x - 1
-            y1 = y - 1
-            while x1 + 1 > 0 and y1 + 1 > 0:
-                if self.board[x1][y1] == NONE:
-                    x1 = -1
-                elif self.board[x1][y1] == BLACK:
-                    x2 = x1 + 1
-                    y2 = y1 + 1
-                    x1 = -1
-                    while x2 < x:
-                        self.board[x2][y2] = BLACK
-                        x2 += 1
-                        y2 += 1
-                x1 -= 1
-                y1 -= 1
-            x1 = x + 1
-            y1 = y + 1
-            while x1 - 1 < BOARD_SIZE - 1 and y1 - 1 < BOARD_SIZE - 1:
-                if self.board[x1][y1] == NONE:
-                    x1 = BOARD_SIZE - 1
-                elif self.board[x1][y1] == BLACK:
-                    x2 = x1 - 1
-                    y2 = y1 - 1
-                    x1 = BOARD_SIZE - 1
-                    while x2 > x:
-                        self.board[x2][y2] = BLACK
-                        x2 -= 1
-                        y2 -= 1
-                x1 += 1
-                y1 += 1
+                x1 = x - 1
+                y1 = y - 1
+                while x1 + 1 > 0 and y1 + 1 > 0:
+                    if self.board[x1][y1] == NONE:
+                        x1 = -1
+                    elif self.board[x1][y1] == BLACK:
+                        x2 = x1 + 1
+                        y2 = y1 + 1
+                        x1 = -1
+                        while x2 < x:
+                            self.board[x2][y2] = BLACK
+                            x2 += 1
+                            y2 += 1
+                    x1 -= 1
+                    y1 -= 1
+                x1 = x + 1
+                y1 = y + 1
+                while x1 - 1 < BOARD_SIZE - 1 and y1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x1][y1] == NONE:
+                        x1 = BOARD_SIZE - 1
+                    elif self.board[x1][y1] == BLACK:
+                        x2 = x1 - 1
+                        y2 = y1 - 1
+                        x1 = BOARD_SIZE - 1
+                        while x2 > x:
+                            self.board[x2][y2] = BLACK
+                            x2 -= 1
+                            y2 -= 1
+                    x1 += 1
+                    y1 += 1
 
-            x1 = x - 1
-            y1 = y + 1
-            while x1 + 1 > 0 and y1 - 1 < BOARD_SIZE - 1:
-                if self.board[x1][y1] == NONE:
-                    x1 = -1
-                elif self.board[x1][y1] == BLACK:
-                    x2 = x1 + 1
-                    y2 = y1 - 1
-                    x1 = -1
-                    while x2 < x:
-                        self.board[x2][y2] = BLACK
-                        x2 += 1
-                        y2 -= 1
-                x1 -= 1
-                y1 += 1
-            x1 = x + 1
-            y1 = y - 1
-            while x1 - 1 < BOARD_SIZE - 1 and y1 + 1 > 0:
-                if self.board[x1][y1] == NONE:
-                    x1 = BOARD_SIZE - 1
-                elif self.board[x1][y1] == BLACK:
-                    x2 = x1 - 1
-                    y2 = y1 + 1
-                    x1 = BOARD_SIZE - 1
-                    while x2 > x:
-                        self.board[x2][y2] = BLACK
-                        x2 -= 1
-                        y2 += 1
-                x1 += 1
-                y1 -= 1
+                x1 = x - 1
+                y1 = y + 1
+                while x1 + 1 > 0 and y1 - 1 < BOARD_SIZE - 1:
+                    if self.board[x1][y1] == NONE:
+                        x1 = -1
+                    elif self.board[x1][y1] == BLACK:
+                        x2 = x1 + 1
+                        y2 = y1 - 1
+                        x1 = -1
+                        while x2 < x:
+                            self.board[x2][y2] = BLACK
+                            x2 += 1
+                            y2 -= 1
+                    x1 -= 1
+                    y1 += 1
+                x1 = x + 1
+                y1 = y - 1
+                while x1 - 1 < BOARD_SIZE - 1 and y1 + 1 > 0:
+                    if self.board[x1][y1] == NONE:
+                        x1 = BOARD_SIZE - 1
+                    elif self.board[x1][y1] == BLACK:
+                        x2 = x1 - 1
+                        y2 = y1 + 1
+                        x1 = BOARD_SIZE - 1
+                        while x2 > x:
+                            self.board[x2][y2] = BLACK
+                            x2 -= 1
+                            y2 += 1
+                    x1 += 1
+                    y1 -= 1
+
+   
 
 
 
