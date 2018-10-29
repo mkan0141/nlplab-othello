@@ -85,8 +85,6 @@ class othello_GUI(tk.Frame):
         self.list_box.pack(side=tk.LEFT)
         self.label.pack(side=tk.BOTTOM)
 
-        self.is_destroy = False
-
     def __init__(self, master=None):
         # スーパークラスの__init__を呼ぶ
         super().__init__(master)
@@ -106,8 +104,6 @@ class othello_GUI(tk.Frame):
         ただし、返却される座標はそれぞれ1~8の間とは限らない。"""
         self.mouse_activate = True
         while True:
-            if self.is_destroy:
-                return -1, -1
             if self.mouse_clicked:
                 self.mouse_clicked = False
                 return self._board_position(self.mouse_x, self.mouse_y)
@@ -153,16 +149,8 @@ class othello_GUI(tk.Frame):
 
     def _close_message(self):
         # ウィンドウを閉じようとしたときに呼ばれるメソッド。通常状態では閉じれない。
-        if self.close_flag:
+        if messagebox.showinfo("Message", "プログラムを終了します。"):
             self._close()
-            return
-        else:
-            self.is_destroy = True
-            messagebox.showinfo("error message", "メインプログラムが終了していません。")
-
-    def closable(self):
-        # ウィンドウを閉じれるようにする。
-        self.close_flag = True
 
     def clean_board(self):
         """ボードを何もない状態にする。"""
@@ -222,13 +210,14 @@ def game():
     # ボードの石をすべて消す。
     test.clean_board()
 
-    # ウィンドウを閉じられるようにする。
-    test.closable()
+    # ウィンドウを閉じられるようにする
     test.set_message("ウィンドウを閉じて下さい。")
+    test._close()
 
-if __name__=='__main__':   
+if __name__=='__main__':
     root = tk.Tk()
     test = othello_GUI(master=root)
     thread = threading.Thread(target=game)
+    thread.setDaemon(True)
     thread.start()
     test.mainloop()
