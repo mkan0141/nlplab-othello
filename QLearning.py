@@ -16,7 +16,7 @@ class QLearning():
     def move(self, board, color):
         return self.policy(board, color)
 
-    
+
     def policy(self, _board, color):
         self.board = deepcopy(_board)
         valid_positions = self.board.get_valid_position(self.board.get_color())
@@ -27,7 +27,10 @@ class QLearning():
         if random.random() < (self.e / (self.action_count // 10000 + 1)):
             self.action = random.choice(valid_positions)
         else:
-            q_list = [self.quantity.get(self.board, position) for position in valid_positions]
+            state = [j for i in self.board.board for j in i]
+            # print(state)
+            q_list = [self.quantity.get(state, position) for position in valid_positions]
+            # print('q_list: {}'.format(q_list))
             q_max = max(q_list)
 
             best_index = [i for i in range(len(q_list)) if q_list[i] == q_max]
@@ -44,7 +47,7 @@ class QLearning():
         # print('stone_nunm2: {}'.format(board.stone_num))
         # print('color: {}'.format(board.color))
         x, y = opponent_player.move(board, board.get_color())
-        
+
         if x != 'pass':
             # print('reverse')
             board.reverse(board.get_color(), x, y)
@@ -75,6 +78,10 @@ class QLearning():
 
     def learn(self, state, action, reward, board):
         valid_positions = board.get_valid_position(self.color)
+
+        state = [j for i in state.board for j in i]
+        board = [j for i in board.board for j in i]
+
         pQ = self.quantity.get(state, action)
 
         q_list = [self.quantity.get(board, position) for position in valid_positions]
@@ -83,7 +90,7 @@ class QLearning():
             q_max = 0
         else:
             q_max = max(q_list)
-        
+
         # print(q_max)
         self.quantity.update(state, action, reward, q_max)
 

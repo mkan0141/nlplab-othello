@@ -9,13 +9,11 @@ class Quantity():
 
 
     def get(self, state, action):
-        state = [j for i in state.board for j in i]
         _value = self.value.get((tuple(state), tuple(action)))
         # print('_value; {}'.format(_value if _value is not None else self.default_q))
         return _value if _value is not None else self.default_q
 
     def set(self, state, action, quantity):
-        state = [j for i in state.board for j in i]
         self.value[(tuple(state), tuple(action))] = quantity
 
 

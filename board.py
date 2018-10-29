@@ -3,7 +3,7 @@ import numpy as np
 NONE  = 0
 BLACK = 1
 WHITE = 2
-BOARD_SIZE = 8
+BOARD_SIZE = 4
 BOARD_HARF_SIZE = int(BOARD_SIZE / 2)
 dx = [0,1,1,1,0,-1,-1,-1]
 dy = [1,1,0,-1,-1,-1,0,1]
@@ -15,10 +15,10 @@ class Board():
         self.turn = 0
         self.stone_num = 4
         self.is_slip = False
-        self.color = WHITE
+        self.color = BLACK
         self._pass = False
         self.interruption = False
-        
+
 
     def init(self):
         self.board = [[NONE for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
@@ -26,7 +26,7 @@ class Board():
         self.board[BOARD_HARF_SIZE][BOARD_HARF_SIZE - 1] = self.board[BOARD_HARF_SIZE - 1][BOARD_HARF_SIZE] = BLACK
         self.turn = 0
         self.stone_num = 4
-        self.color = WHITE
+        self.color = BLACK
         self._pass = False
         self.interruption = False
         self.valid_pos = []
@@ -57,7 +57,7 @@ class Board():
     def is_end(self):
         # print(self.stone_num)
         pos = self.get_valid_position(self.get_color())
-        
+
         #x44x4print(self._pass and len(pos) == 0)
         return self.stone_num == BOARD_SIZE * BOARD_SIZE or (self._pass and len(pos) == 0)
 
@@ -87,7 +87,7 @@ class Board():
     def reverse(self, color, y, x):
         if x == 'pass':
             self._pass = True
-            return 
+            return
         self.stone_num += 1
         self._pass = False
 
