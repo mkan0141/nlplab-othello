@@ -14,9 +14,11 @@ MAS_SIZE = (F["x2"] - F["x1"]) / 8
 # 駒の半径
 STONE_SIZE = 20
 # 盤の色
-BD_COLOR = "green"
+BG_COLOR = "green"
 # 変化したときの盤の色
 SD_COLOR = "lightgreen"
+# マウスカーソル上のマスの色
+M_COLOR = "aquamarine"
 
 class othello_GUI(tk.Frame):
     """ 念のために、 _ から始まる名前のメソッドは参照しないでください。 """
@@ -39,7 +41,7 @@ class othello_GUI(tk.Frame):
         # 盤の作成
         self.mas = [[0 for i in range(8)]for j in range(8)]
         self.stone = [[0 for i in range(8)]for j in range(8)]
-        color = BD_COLOR
+        color = BG_COLOR
         for i in range(8):
             for j in range(8):
                 x1, y1, = F["x1"] + j * MAS_SIZE, F["y1"] + i * MAS_SIZE
@@ -63,6 +65,9 @@ class othello_GUI(tk.Frame):
         self.mouse_activate = False
         self.mouse_clicked = False
         self.mouse_x, self.mouse_y = 0, 0
+
+        self.canvas.bind("<Motion>", self._mouse_move)
+        self.lmouse = [0, 0, BG_COLOR]
 
         # ウィンドウを閉じようとしたときに呼ぶメソッドの設定
         self.master.protocol("WM_DELETE_WINDOW", self._close_message)
@@ -98,12 +103,24 @@ class othello_GUI(tk.Frame):
         if self.mouse_activate:
             self.mouse_clicked = True
             self.mouse_x, self.mouse_y = e.x, e.y
-        
+    
+    def _mouse_move(self, e):
+        # マウスが動いたときの処理
+        if 0 <= self.lmouse[0] < 8 and 0 <= self.lmouse[1] < 8:
+            # 色を変えていたマスの色を戻す。
+            self._set_bgcolor(self.lmouse[1], self.lmouse[0], self.lmouse[2])
+        x, y = self._board_position(e.x, e.y)
+        if 0 < x <= 8 and 0 < y <= 8:
+            # マウスカーソル上のマスの色を変える。
+            self.lmouse = [x-1, y-1, self.canvas.itemcget(self.mas[y-1][x-1], "fill")]
+            self._set_bgcolor(y-1, x-1, M_COLOR)
+
     def get_mouse(self):
         """このメソッドを呼んでから左クリックをしたときの座標をボードのマス目基準で返却する。
         ただし、返却される座標はそれぞれ1~8の間とは限らない。"""
         self.mouse_activate = True
         while True:
+            time.sleep(0.1)
             if self.mouse_clicked:
                 self.mouse_clicked = False
                 return self._board_position(self.mouse_x, self.mouse_y)
@@ -134,7 +151,7 @@ class othello_GUI(tk.Frame):
 
     def show_board(self, board):
         # ボードの石の状況を表示する。
-        self._allset_bgcolor(BD_COLOR)
+        self._allset_bgcolor(BG_COLOR)
         for y in range(8):
             for x in range(8):
                 if board[y][x] == BLACK:
@@ -143,21 +160,21 @@ class othello_GUI(tk.Frame):
                     self.canvas.itemconfigure(self.stone[y][x], fill="white", outline="black")
                     
               
-    def _close(self):
+    def close(self):
         # ウィンドウを閉じる。
         self.master.destroy()
 
     def _close_message(self):
-        # ウィンドウを閉じようとしたときに呼ばれるメソッド。通常状態では閉じれない。
+        # ウィンドウを閉じようとしたときに呼ばれるメソッド。
         if messagebox.showinfo("Message", "プログラムを終了します。"):
-            self._close()
+            self.close()
 
     def clean_board(self):
         """ボードを何もない状態にする。"""
         for i in range(8):
             for j in range(8):
-                self.canvas.itemconfigure(self.mas[i][j], fill=BD_COLOR)
-                self.canvas.itemconfigure(self.stone[i][j], fill=BD_COLOR, outline=BD_COLOR)
+                self.canvas.itemconfigure(self.mas[i][j], fill=BG_COLOR)
+                self.canvas.itemconfigure(self.stone[i][j], fill=BG_COLOR, outline=BG_COLOR)
 
     def set_message(self, msg):
         """ウィンドウ下部に表示したい文章を入力する。クラス名.set_message("ここにメッセージを入力する。")"""
@@ -203,6 +220,7 @@ def game():
     test.show_put(pos)
     # マウス入力を待つ。
     x, y = test.get_mouse()
+    # get_mouse()で返却される値。
     print(x, y)
     test.get_mouse()
     # リストの内容をすべて消去する。
@@ -210,9 +228,8 @@ def game():
     # ボードの石をすべて消す。
     test.clean_board()
 
-    # ウィンドウを閉じられるようにする
-    test.set_message("ウィンドウを閉じて下さい。")
-    test._close()
+    # ウィンドウを閉じる
+    test.close()
 
 if __name__=='__main__':
     root = tk.Tk()
