@@ -170,7 +170,7 @@ class othello_GUI(tk.Frame):
 
     def _close_message(self):
         # ウィンドウを閉じようとしたときに呼ばれるメソッド。
-        if messagebox.showinfo("Message", "プログラムを終了します。"):
+        if messagebox.askokcancel("Message", "プログラムを終了します。"):
             self.closed = True
             self.close()
 
