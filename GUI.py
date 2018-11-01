@@ -145,6 +145,8 @@ class othello_GUI(tk.Frame):
         # マスの色をすべてcolorにする。
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
+                if [self.lmouse[0], self.lmouse[1]] == [j, i]:
+                    self.lmouse[2] = BG_COLOR
                 self._set_bgcolor(i, j, color)
 
     def _set_bgcolor(self, y, x, color):
@@ -189,9 +191,9 @@ class othello_GUI(tk.Frame):
         """石がおけるマスの色を変える。引数に「置ける場所リスト」を指定する。"""
         for y in range(BOARD_SIZE):
             for x in range(BOARD_SIZE):
-                if [self.lmouse[0], self.lmouse[1]] not in valid_pos:
-                    self.lmouse[2] = BG_COLOR
                 if [x, y] in valid_pos:
+                    if [self.lmouse[0], self.lmouse[1]] in valid_pos:
+                        self.lmouse[2] = SD_COLOR
                     self._set_bgcolor(y, x, SD_COLOR)
         
     def append_list(self, text):
