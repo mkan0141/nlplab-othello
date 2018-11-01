@@ -59,7 +59,7 @@ def turn(board, player, opponent_player, GUI, count):
         board.reverse(color, x, y)
         board.next_turn()
         # Q-learning時にパラメータを更新する
-        player.getGameResult(board, opponent_player)
+        player.getGameResult(board, opponent_player, GUI)
 
         # 棋譜を追加する。
         msg = str(count) + " : "

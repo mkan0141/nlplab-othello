@@ -13,7 +13,7 @@ class Player():
         return x , y
 
 
-    def getGameResult(self, board, opponent_player):
+    def getGameResult(self, board, opponent_player, GUI):
         pass
 
     def show_valid_position(self, valid_pos):

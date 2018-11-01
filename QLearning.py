@@ -41,7 +41,7 @@ class QLearning():
         return self.action
 
 
-    def getGameResult(self, _board, opponent_player):
+    def getGameResult(self, _board, opponent_player, GUI):
         board = deepcopy(_board)
         # print(board.get_color())
         # print('stone_nunm2: {}'.format(board.stone_num))

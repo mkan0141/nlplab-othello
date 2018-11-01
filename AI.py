@@ -16,6 +16,6 @@ class RandomAI:
         # print('random-player ({},{})'.format(x, y))
         return x, y
 
-    def getGameResult(self, board, opponent_player):
+    def getGameResult(self, board, opponent_player, GUI):
         pass
 
