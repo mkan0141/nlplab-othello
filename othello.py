@@ -5,6 +5,7 @@ import time
 import argparse
 import os
 import sys
+import pickle
 
 import board as B
 import player as P
@@ -76,7 +77,7 @@ def game():
     args = parser.parse_args()
     player1 = set_player(args.p1, WHITE, 'first')
     player2 = set_player(args.p2, BLACK, 'second')
-    
+
     board = B.Board()
     color = WHITE
     GUI.set_message("平研３回生　Othello")
@@ -120,10 +121,10 @@ if __name__ == '__main__':
     if not ((1 <=args.p1 <= 3) & (1<= args.p2 <= 3)):
         print('引数で指定できる数字は1, 2, 3のみです.')
         sys.exit()
-    
+
     p1 = set_player(args.p1, WHITE, 'first')
     p2 = set_player(args.p2, BLACK, 'second')
-    
+
     root = tk.Tk()
     GUI = G.othello_GUI(master=root)
     thread = threading.Thread(target=game)
