@@ -111,6 +111,9 @@ def game():
 
         GUI.show_board(board.board)
 
+    GUI.show_board(board.get_board())
+    GUI.set_message(str(board.who_won()))
+    GUI.user_input()
     GUI.set_message("Thank you for playing!")
     time.sleep(2)
     GUI.close()

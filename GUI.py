@@ -53,18 +53,18 @@ class othello_GUI(tk.Frame):
                 self.mas[i][j] = self.canvas.create_rectangle(x1, y1, x2, y2, fill=color)
                 x1, y1 = self._canvas_position(j, i)
                 self.stone[i][j] = self.canvas.create_oval(x1 - STONE_SIZE, y1 - STONE_SIZE, x1 + STONE_SIZE, y1 + STONE_SIZE, fill=color, outline=color)
-        
+
         # 盤の座標表記
         f = ('Century', '13', 'bold')
         for i in range(BOARD_SIZE):
             self.canvas.create_text(F["x1"]+MAS_SIZE/2+MAS_SIZE*i, F["y1"]-12, font=f, text=chr(i+ord('a')))
             self.canvas.create_text(F["x1"]-12, F["y1"]+MAS_SIZE/2+MAS_SIZE*i, font=f, text=i+1)
-        
+
         # 盤に描かれてる謎の黒丸4つ
         if BOARD_SIZE == 8:
             for a, b in [[2,2], [2,6], [6,2], [6,6]]:
                 self.canvas.create_oval(F["x1"]+MAS_SIZE*a-3, F["y1"]+MAS_SIZE*b-3, F["x1"]+MAS_SIZE*a+3, F["y1"]+MAS_SIZE*b+3, fill="black")
-        
+
         # 左クリックで呼ぶメソッドの設定
         self.canvas.bind("<Button-1>", self._mouse_click)
         self.mouse_activate = False
@@ -107,7 +107,7 @@ class othello_GUI(tk.Frame):
         if self.mouse_activate:
             self.mouse_clicked = True
             self.mouse_x, self.mouse_y = e.x, e.y
-    
+
     def _mouse_move(self, e):
         # マウスが動いたときの処理
         if 0 <= self.lmouse[0] < BOARD_SIZE and 0 <= self.lmouse[1] < BOARD_SIZE:
@@ -138,20 +138,22 @@ class othello_GUI(tk.Frame):
     def _canvas_position(self, x, y):
         # マス基準の座標をキャンバス上におけるそのマスの中心値に変換する。
         x = F["x1"] + MAS_SIZE/2 + MAS_SIZE * x
-        y = F["y1"] + MAS_SIZE/2 + MAS_SIZE * y 
+        y = F["y1"] + MAS_SIZE/2 + MAS_SIZE * y
         return x, y
 
     def _allset_bgcolor(self, color):
         # マスの色をすべてcolorにする。
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
+                if [self.lmouse[0], self.lmouse[1]] == [j, i]:
+                    self.lmouse[2] = BG_COLOR
                 self._set_bgcolor(i, j, color)
 
     def _set_bgcolor(self, y, x, color):
         # (x, y)のマスの色をcolorにする。
         self.canvas.itemconfigure(self.mas[y][x], fill=color)
         if self.canvas.itemcget(self.stone[y][x], "outline") != "black": # 白黒どちらでもoutlineは黒
-            self.canvas.itemconfigure(self.stone[y][x], fill=color, outline=color) 
+            self.canvas.itemconfigure(self.stone[y][x], fill=color, outline=color)
 
     def show_board(self, board):
         # ボードの石の状況を表示する。
@@ -162,8 +164,8 @@ class othello_GUI(tk.Frame):
                     self.canvas.itemconfigure(self.stone[x][y], fill="black", outline="black")
                 elif board[x][y] == WHITE:
                     self.canvas.itemconfigure(self.stone[x][y], fill="white", outline="black")
-                    
-              
+
+
     def close(self):
         # ウィンドウを閉じる。
         self.master.destroy()
@@ -189,11 +191,11 @@ class othello_GUI(tk.Frame):
         """石がおけるマスの色を変える。引数に「置ける場所リスト」を指定する。"""
         for y in range(BOARD_SIZE):
             for x in range(BOARD_SIZE):
-                if [self.lmouse[0], self.lmouse[1]] not in valid_pos:
-                    self.lmouse[2] = BG_COLOR
                 if [x, y] in valid_pos:
+                    if [self.lmouse[0], self.lmouse[1]] in valid_pos:
+                        self.lmouse[2] = SD_COLOR
                     self._set_bgcolor(y, x, SD_COLOR)
-        
+
     def append_list(self, text):
         """リストの末尾に要素textを追加する。"""
         self.list_box.insert(tk.END, text)
