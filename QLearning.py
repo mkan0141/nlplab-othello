@@ -13,7 +13,7 @@ class QLearning():
         self.e = 0.2
         self.action_count = 0
 
-    def move(self, board, color):
+    def move(self, board, color, GUI):
         return self.policy(board, color)
 
 
@@ -46,7 +46,7 @@ class QLearning():
         # print(board.get_color())
         # print('stone_nunm2: {}'.format(board.stone_num))
         # print('color: {}'.format(board.color))
-        x, y = opponent_player.move(board, board.get_color())
+        x, y = opponent_player.move(board, board.get_color(), GUI)
 
         if x != 'pass':
             # print('reverse')

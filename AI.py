@@ -2,7 +2,7 @@ import random
 from board import Board
 
 class RandomAI:
-    def move(self, board, color):
+    def move(self, board, color, GUI):
         return self.random_ai(board, color)
 
     def random_ai(self, board, color):
