@@ -118,7 +118,7 @@ class othello_GUI(tk.Frame):
         if 0 <= x < BOARD_SIZE and 0 <= y < BOARD_SIZE:
             # マウスカーソル上のマスの色を変える。
             self.lmouse = [x, y, self.canvas.itemcget(self.mas[y][x], "fill")]
-            self._set_bgcolor(y, x, M_COLOR)
+            self._setbgcolor(y, x, M_COLOR)
 
     def user_input(self):
         """このメソッドを呼んでから左クリックをしたときの座標をボードのマス目基準で返却する。
@@ -146,11 +146,15 @@ class othello_GUI(tk.Frame):
         # マスの色をすべてcolorにする。
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
-                if [self.lmouse[0], self.lmouse[1]] == [j, i]:
-                    self.lmouse[2] = BG_COLOR
                 self._set_bgcolor(i, j, color)
 
     def _set_bgcolor(self, y, x, color):
+        # (x, y)のマスの色をcolorにする。マウスカーソル上のマスだったなら、保存している色を更新する。
+        if [self.lmouse[0], self.lmouse[1]] == [x, y]:
+            self.lmouse[2] = color
+        self._setbgcolor(y, x, color)
+
+    def _setbgcolor(self, y, x, color):
         # (x, y)のマスの色をcolorにする。
         self.canvas.itemconfigure(self.mas[y][x], fill=color)
         if self.canvas.itemcget(self.stone[y][x], "outline") != "black": # 白黒どちらでもoutlineは黒

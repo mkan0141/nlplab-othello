@@ -2,7 +2,7 @@ class Player():
     
     def move(self, board, color, GUI):
         valid_pos = board.get_valid_position(color)
-        GUI.show_valid_position(valid_pos)
+        #GUI.show_valid_position(valid_pos)
         print(valid_pos)
         x, y = [-1, -1]
         GUI.set_message("置きたい場所をクリックしてください.")
