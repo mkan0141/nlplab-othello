@@ -14,7 +14,7 @@ BLACK = 1
 WHITE = 2
 
 
-def turn(board, player, opponent_player):
+def turn(board, player, opponent_player, GUI):
         # print('stone_nunm1: {}'.format(board.stone_num))
         # 打てる場所のリストを作成
         valid_pos = board.get_valid_position(board.get_color())
@@ -30,7 +30,7 @@ def turn(board, player, opponent_player):
         # 打てる場所を出力
         # print(valid_pos)
         # ユーザからの入力
-        x, y = player.move(board, board.get_color())
+        x, y = player.move(board, board.get_color(), 0)
         #print('({}, {})'.format(x, y))
         # player.getGameResult(board, opponent_player)
         # x, y = random_ai.random_ai(valid_pos)
@@ -41,7 +41,7 @@ def turn(board, player, opponent_player):
         # board.show_board()
         board.next_turn()
         # print('--------------')
-        player.getGameResult(board, opponent_player)
+        player.getGameResult(board, opponent_player, 0)
 
 
 def game(player1, player2):
@@ -75,9 +75,9 @@ def game(player1, player2):
                 while not board.is_end():
                     color = board.get_color()
                     if color == BLACK:
-                        status = turn(board, player1, player2)
+                        status = turn(board, player1, player2, 0)
                     else:
-                        status = turn(board, player2, player1)
+                        status = turn(board, player2, player1, 0)
                     if status == "game-set":
                         break
                     # 盤面の表示
@@ -91,27 +91,27 @@ def game(player1, player2):
                 elif win == WHITE:
                     # print('white win')
                     w += 1
-            
+
             if type(player1) == Q.QLearning:
                 win_rate.append(b / 100)
             else:
                 win_rate.append(w / 100)
-            
+
             print('black {} win'.format(b))
             print('white {} win'.format(w))
 
         if type(player1) == Q.QLearning:
-            with open('./data/first_move_v{}.pickle'.format(cnt), 'wb') as f:
+            with open('./data/first_move_4x4.pickle'.format(cnt), 'wb') as f:
                 pickle.dump(player1, f)
             with open('./data/first_win_rate.pickle', 'wb') as f:
                 pickle.dump(win_rate, f)
 
         if type(player2) == Q.QLearning:
-            with open('./data/second_move_v{}.pickle'.format(cnt), 'wb') as f:
+            with open('./data/second_move_4x4.pickle', 'wb') as f:
                 pickle.dump(player2, f)
             with open('./data/second_win_rate.pickle', 'wb') as f:
                 pickle.dump(win_rate, f)
-        
+
         cnt += 1
         # plt.plot(win_rate)
         # plt.show()
@@ -145,6 +145,4 @@ if __name__ == '__main__':
             player2 = Q.QLearning(WHITE)
 
     game(player1, player2)
-
-
 

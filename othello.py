@@ -32,8 +32,8 @@ def set_player(args, color, s):
         _players = R.RandomAI()
     elif args is 3:
         # 学習したデータがあればそれを読み込む
-        if os.path.exists('./data/first_move.pickle'):
-            with open('./data/{}_move.pickle'.format(s), 'rb') as f:
+        if os.path.exists('./data/{}_move_4x4.pickle'.format(s)):
+            with open('./data/{}_move_4x4.pickle'.format(s), 'rb') as f:
                 print('ローディング中... ( 思った以上に時間がかかります )')
                 _players = pickle.load(f)
                 print('完了!!')
@@ -59,7 +59,7 @@ def turn(board, player, opponent_player, GUI, count):
         board.reverse(color, x, y)
         board.next_turn()
         # Q-learning時にパラメータを更新する
-        player.getGameResult(board, opponent_player, GUI)
+        # player.getGameResult(board, opponent_player, GUI)
 
         # 棋譜を追加する。
         msg = str(count) + " : "
@@ -108,8 +108,8 @@ def game():
             status = turn(board, player2, player1, GUI, count)
         if status == "game-set":
             break
-
         GUI.show_board(board.board)
+        time.sleep(1)
 
     GUI.show_board(board.get_board())
     GUI.set_message(str(board.who_won()))

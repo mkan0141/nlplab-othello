@@ -1,6 +1,7 @@
 from Quantity import Quantity
 from board import Board
 from copy import deepcopy, copy
+import AI as A
 
 import random
 
@@ -46,7 +47,7 @@ class QLearning():
         # print(board.get_color())
         # print('stone_nunm2: {}'.format(board.stone_num))
         # print('color: {}'.format(board.color))
-        x, y = opponent_player.move(board, board.get_color(), GUI)
+        x, y = opponent_player.move(board, board.get_color(), 0)
 
         if x != 'pass':
             # print('reverse')
