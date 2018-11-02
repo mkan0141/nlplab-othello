@@ -87,14 +87,15 @@ def game():
         GUI.set_message("平研３回生　Othello")
         count = 0
         board.init()
-        GUI.show_board(board.board)
+        #GUI.show_board(board.board)
+        GUI.show_animation(board.board)
 
         while not board.is_end():
             # print(board.is_end())
             color = board.get_color()
             count += 1
             # 盤面の表示
-            GUI.show_board(board.get_board())
+            #GUI.show_board(board.get_board())
             # 打てる場所のリストを作成
             valid_pos = board.get_valid_position(color)
             # 打つ場所がなかったらパスする
@@ -105,6 +106,7 @@ def game():
                 continue
             # 打てる場所を出力
             GUI.show_valid_position(valid_pos)
+            time.sleep(0.5)
             # playerの入力
             if color == BLACK:
                 status = turn(board, player1, player2, GUI, count)
@@ -112,7 +114,7 @@ def game():
                 status = turn(board, player2, player1, GUI, count)
             if status == "game-set":
                 break
-            GUI.show_board(board.board)
+            GUI.show_animation(board.board)
             time.sleep(0.5)
 
         win = board.who_won()

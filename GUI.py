@@ -10,7 +10,7 @@ WHITE = 2 # 白石が置かれているマス
 # マスのサイズ
 MAS_SIZE = 50
 # ボードのサイズ〇x〇
-BOARD_SIZE = 4
+BOARD_SIZE = 8
 # ボードの中心
 CENTER = [250, 270]
 # 盤の枠線の左上の座標 x1, y2, 右下の座標 x2, y2 を格納した辞書型配列
@@ -93,6 +93,7 @@ class othello_GUI(tk.Frame):
         self.canvas.pack(side=tk.LEFT)
         self.list_box.pack(side=tk.LEFT)
         self.label.pack(side=tk.BOTTOM)
+        self.lboard = []
 
     def __init__(self, master=None):
         # スーパークラスの__init__を呼ぶ
@@ -165,6 +166,57 @@ class othello_GUI(tk.Frame):
                 elif board[x][y] == WHITE:
                     self.canvas.itemconfigure(self.stone[x][y], fill="white", outline="black")
 
+    def show_animation(self, board):
+        # 順番に表示
+        if len(self.lboard) == 0:
+            self._cpboard(board)
+            self.show_board(board)
+            return 
+        self._allset_bgcolor(BG_COLOR)
+        show_list = self._create_list(board)
+        for a in show_list:
+            for b in a:
+                x, y = b[0], b[1]
+                if board[y][x] == BLACK:
+                    self.canvas.itemconfigure(self.stone[y][x], fill="black", outline="black")
+                elif board[y][x] == WHITE:
+                    self.canvas.itemconfigure(self.stone[y][x], fill="white", outline="black")
+            time.sleep(0.1)
+    
+    def _create_list(self, board):
+        # 直前と変わったマスの座標をリストにして返却
+        a = self._where_put(board)
+        show_list = []
+        show_list.append([a])
+        self._set_bgcolor(a[1], a[0], SD_COLOR)
+        x, y = a[0], a[1]
+        size = max(x+1, BOARD_SIZE-x-1, y+1, BOARD_SIZE-y-1)
+        for s in range(1, size+1):
+            li = [[x+s, y], [x+s, y+s], [x, y+s], [x-s, y+s], [x-s, y], [x-s, y-s], [x, y-s], [x+s, y-s]]
+            li2 = []
+            for b in li:
+                if 0 <= b[0] < BOARD_SIZE and 0 <= b[1] < BOARD_SIZE:
+                    if self.lboard[b[1]][b[0]] != board[b[1]][b[0]]:
+                        li2.append(b)
+            if len(li2) == 0:
+                break
+            show_list.append(li2)
+        self._cpboard(board)
+        return show_list
+
+    def _where_put(self, board):
+        # 置いた場所を返す。
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                if self.lboard[i][j] == NONE and board[i][j] != NONE:
+                    return [j,i]
+
+    def _cpboard(self, board):
+        # boardをコピーする。
+        self.lboard = [[NONE for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                self.lboard[i][j] = board[i][j]
 
     def close(self):
         # ウィンドウを閉じる。
@@ -178,6 +230,7 @@ class othello_GUI(tk.Frame):
 
     def clean_board(self):
         """ボードを何もない状態にする。"""
+        self.lboard = []
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
                 self.canvas.itemconfigure(self.mas[i][j], fill=BG_COLOR)
@@ -189,6 +242,7 @@ class othello_GUI(tk.Frame):
 
     def show_valid_position(self, valid_pos):
         """石がおけるマスの色を変える。引数に「置ける場所リスト」を指定する。"""
+        self._allset_bgcolor(BG_COLOR)
         for y in range(BOARD_SIZE):
             for x in range(BOARD_SIZE):
                 if [x, y] in valid_pos:
