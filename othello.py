@@ -24,6 +24,8 @@ parser.add_argument("--p2",
 NONE  = 0
 BLACK = 1
 WHITE = 2
+p_color = None
+
 
 def set_player(args, color, s):
     if args is 1:
@@ -31,6 +33,7 @@ def set_player(args, color, s):
     elif args is 2:
         _players = R.RandomAI()
     elif args is 3:
+        p_color = color
         # 学習したデータがあればそれを読み込む
         if os.path.exists('./data/{}_move_4x4.pickle'.format(s)):
             with open('./data/{}_move_4x4.pickle'.format(s), 'rb') as f:
@@ -78,44 +81,55 @@ def game():
     player1 = set_player(args.p1, WHITE, 'first')
     player2 = set_player(args.p2, BLACK, 'second')
 
-    board = B.Board()
-    color = WHITE
-    GUI.set_message("平研３回生　Othello")
-    count = 0
-    board.init()
-    GUI.show_board(board.board)
-
-    while not board.is_end():
-        # print(board.is_end())
-        color = board.get_color()
-        count += 1
-        # 盤面の表示
-        GUI.show_board(board.get_board())
-        # 打てる場所のリストを作成
-        valid_pos = board.get_valid_position(color)
-        # 打つ場所がなかったらパスする
-        if board.is_pass(valid_pos):
-            if board.is_interruption():
-                break
-            board.next_turn()
-            continue
-        # 打てる場所を出力
-        GUI.show_valid_position(valid_pos)
-        # playerの入力
-        if color == BLACK:
-            status = turn(board, player1, player2, GUI, count)
-        else:
-            status = turn(board, player2, player1, GUI, count)
-        if status == "game-set":
-            break
+    while True:
+        board = B.Board()
+        color = WHITE
+        GUI.set_message("平研３回生　Othello")
+        count = 0
+        board.init()
         GUI.show_board(board.board)
-        time.sleep(1)
 
-    GUI.show_board(board.get_board())
-    GUI.set_message(str(board.who_won()))
-    GUI.user_input()
-    GUI.set_message("Thank you for playing!")
-    time.sleep(2)
+        while not board.is_end():
+            # print(board.is_end())
+            color = board.get_color()
+            count += 1
+            # 盤面の表示
+            GUI.show_board(board.get_board())
+            # 打てる場所のリストを作成
+            valid_pos = board.get_valid_position(color)
+            # 打つ場所がなかったらパスする
+            if board.is_pass(valid_pos):
+                if board.is_interruption():
+                    break
+                board.next_turn()
+                continue
+            # 打てる場所を出力
+            GUI.show_valid_position(valid_pos)
+            # playerの入力
+            if color == BLACK:
+                status = turn(board, player1, player2, GUI, count)
+            else:
+                status = turn(board, player2, player1, GUI, count)
+            if status == "game-set":
+                break
+            GUI.show_board(board.board)
+            time.sleep(0.5)
+
+        win = board.who_won()
+        GUI.show_board(board.get_board())
+
+        if win == p_color:
+            GUI.set_message('プレイヤーの勝利です！おめでとう！')
+        elif win == None:
+            GUI.set_message('引き分けです！いい勝負でした！')
+        else:
+            GUI.set_message('AIの勝利です！残念...')
+
+        GUI.user_input()
+        GUI.set_message("Thank you for playing!")
+        time.sleep(2)
+        GUI.user_input()
+        GUI.clean_board()
     GUI.close()
 
 
