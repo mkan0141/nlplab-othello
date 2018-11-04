@@ -1,4 +1,21 @@
 class Player():
+    
+    def move(self, board, color, GUI):
+        valid_pos = board.get_valid_position(color)
+        #GUI.show_valid_position(valid_pos)
+        print(valid_pos)
+        x, y = [-1, -1]
+        GUI.set_message("置きたい場所をクリックしてください.")
+        x, y = GUI.user_input()
+        while [x, y] not in valid_pos:
+            GUI.set_message("その場所には置けません...")
+            x, y = GUI.user_input()
+        return x , y
+
+
+    def getGameResult(self, board, opponent_player, GUI):
+        pass
+
     def show_valid_position(self, valid_pos):
         print('置ける場所[', end='')
         for pos in valid_pos:
@@ -8,10 +25,10 @@ class Player():
             print('{}{}, '.format(pos[0], pos[1]), end='')
         print(']')
 
+    
     def is_put(self,valid_pos, x, y):
         d = [chr(ord('A') + x), y + 1]
         return (d in valid_pos)
-
 
 
     def user_input(self, valid_pos):

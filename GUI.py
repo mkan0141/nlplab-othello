@@ -7,10 +7,14 @@ NONE = 0 # 石が置かれていないマス
 BLACK = 1 # 黒石が置かれているマス
 WHITE = 2 # 白石が置かれているマス
 
-# 盤の枠線の左上の座標 x1, y2, 右下の座標 x2, y2 を格納した辞書型配列
-F = {"x1":50, "y1":70, "x2":450, "y2":470}
 # マスのサイズ
-MAS_SIZE = (F["x2"] - F["x1"]) / 8
+MAS_SIZE = 50
+# ボードのサイズ〇x〇
+BOARD_SIZE = 8
+# ボードの中心
+CENTER = [250, 270]
+# 盤の枠線の左上の座標 x1, y2, 右下の座標 x2, y2 を格納した辞書型配列
+F = {"x1":CENTER[0]-BOARD_SIZE*MAS_SIZE/2, "y1":CENTER[1]-BOARD_SIZE*MAS_SIZE/2, "x2":CENTER[0]+BOARD_SIZE*MAS_SIZE/2, "y2":CENTER[1]-BOARD_SIZE*MAS_SIZE/2}
 # 駒の半径
 STONE_SIZE = 20
 # 盤の色
@@ -36,30 +40,31 @@ class othello_GUI(tk.Frame):
 
         # オセロのロゴ
         f = ('MV Boli', '20', 'underline')
-        self.canvas.create_text(325, F["y1"]-40, font=f, text="Othello")
+        self.canvas.create_text(325, 30, font=f, text="Othello")
 
         # 盤の作成
-        self.mas = [[0 for i in range(8)]for j in range(8)]
-        self.stone = [[0 for i in range(8)]for j in range(8)]
+        self.mas = [[0 for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
+        self.stone = [[0 for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
         color = BG_COLOR
-        for i in range(8):
-            for j in range(8):
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
                 x1, y1, = F["x1"] + j * MAS_SIZE, F["y1"] + i * MAS_SIZE
                 x2, y2 = x1 + MAS_SIZE, y1 + MAS_SIZE
                 self.mas[i][j] = self.canvas.create_rectangle(x1, y1, x2, y2, fill=color)
                 x1, y1 = self._canvas_position(j, i)
                 self.stone[i][j] = self.canvas.create_oval(x1 - STONE_SIZE, y1 - STONE_SIZE, x1 + STONE_SIZE, y1 + STONE_SIZE, fill=color, outline=color)
-        
+
         # 盤の座標表記
         f = ('Century', '13', 'bold')
-        for i in range(8):
+        for i in range(BOARD_SIZE):
             self.canvas.create_text(F["x1"]+MAS_SIZE/2+MAS_SIZE*i, F["y1"]-12, font=f, text=chr(i+ord('a')))
             self.canvas.create_text(F["x1"]-12, F["y1"]+MAS_SIZE/2+MAS_SIZE*i, font=f, text=i+1)
-        
+
         # 盤に描かれてる謎の黒丸4つ
-        for a, b in [[2,2], [2,6], [6,2], [6,6]]:
-            self.canvas.create_oval(F["x1"]+MAS_SIZE*a-3, F["y1"]+MAS_SIZE*b-3, F["x1"]+MAS_SIZE*a+3, F["y1"]+MAS_SIZE*b+3, fill="black")
-        
+        if BOARD_SIZE == 8:
+            for a, b in [[2,2], [2,6], [6,2], [6,6]]:
+                self.canvas.create_oval(F["x1"]+MAS_SIZE*a-3, F["y1"]+MAS_SIZE*b-3, F["x1"]+MAS_SIZE*a+3, F["y1"]+MAS_SIZE*b+3, fill="black")
+
         # 左クリックで呼ぶメソッドの設定
         self.canvas.bind("<Button-1>", self._mouse_click)
         self.mouse_activate = False
@@ -71,7 +76,6 @@ class othello_GUI(tk.Frame):
 
         # ウィンドウを閉じようとしたときに呼ぶメソッドの設定
         self.master.protocol("WM_DELETE_WINDOW", self._close_message)
-        self.close_flag = False
 
         # ウィンドウ下部にテキストを表示する枠を用意
         self.msg = tk.StringVar()
@@ -89,6 +93,7 @@ class othello_GUI(tk.Frame):
         self.canvas.pack(side=tk.LEFT)
         self.list_box.pack(side=tk.LEFT)
         self.label.pack(side=tk.BOTTOM)
+        self.lboard = []
 
     def __init__(self, master=None):
         # スーパークラスの__init__を呼ぶ
@@ -103,21 +108,21 @@ class othello_GUI(tk.Frame):
         if self.mouse_activate:
             self.mouse_clicked = True
             self.mouse_x, self.mouse_y = e.x, e.y
-    
+
     def _mouse_move(self, e):
         # マウスが動いたときの処理
-        if 0 <= self.lmouse[0] < 8 and 0 <= self.lmouse[1] < 8:
+        if 0 <= self.lmouse[0] < BOARD_SIZE and 0 <= self.lmouse[1] < BOARD_SIZE:
             # 色を変えていたマスの色を戻す。
             self._set_bgcolor(self.lmouse[1], self.lmouse[0], self.lmouse[2])
         x, y = self._board_position(e.x, e.y)
-        if 0 < x <= 8 and 0 < y <= 8:
+        if 0 <= x < BOARD_SIZE and 0 <= y < BOARD_SIZE:
             # マウスカーソル上のマスの色を変える。
-            self.lmouse = [x-1, y-1, self.canvas.itemcget(self.mas[y-1][x-1], "fill")]
-            self._set_bgcolor(y-1, x-1, M_COLOR)
+            self.lmouse = [x, y, self.canvas.itemcget(self.mas[y][x], "fill")]
+            self._setbgcolor(y, x, M_COLOR)
 
-    def get_mouse(self):
+    def user_input(self):
         """このメソッドを呼んでから左クリックをしたときの座標をボードのマス目基準で返却する。
-        ただし、返却される座標はそれぞれ1~8の間とは限らない。"""
+        ただし、返却される座標はそれぞれ 1 ~ BOARD_SIZE の間とは限らない。"""
         self.mouse_activate = True
         while True:
             time.sleep(0.1)
@@ -127,52 +132,111 @@ class othello_GUI(tk.Frame):
 
     def _board_position(self, x, y):
         # キャンバス上での座標をボードのマス基準の座標に変換する。
-        x = (x - F["x1"]) // MAS_SIZE + 1
-        y = (y - F["y1"]) // MAS_SIZE + 1
+        x = (x - F["x1"]) // MAS_SIZE
+        y = (y - F["y1"]) // MAS_SIZE
         return int(x), int(y)
 
     def _canvas_position(self, x, y):
         # マス基準の座標をキャンバス上におけるそのマスの中心値に変換する。
         x = F["x1"] + MAS_SIZE/2 + MAS_SIZE * x
-        y = F["y1"] + MAS_SIZE/2 + MAS_SIZE * y 
+        y = F["y1"] + MAS_SIZE/2 + MAS_SIZE * y
         return x, y
 
     def _allset_bgcolor(self, color):
         # マスの色をすべてcolorにする。
-        for i in range(8):
-            for j in range(8):
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
                 self._set_bgcolor(i, j, color)
 
     def _set_bgcolor(self, y, x, color):
+        # (x, y)のマスの色をcolorにする。マウスカーソル上のマスだったなら、保存している色を更新する。
+        if [self.lmouse[0], self.lmouse[1]] == [x, y]:
+            self.lmouse[2] = color
+        self._setbgcolor(y, x, color)
+
+    def _setbgcolor(self, y, x, color):
         # (x, y)のマスの色をcolorにする。
         self.canvas.itemconfigure(self.mas[y][x], fill=color)
         if self.canvas.itemcget(self.stone[y][x], "outline") != "black": # 白黒どちらでもoutlineは黒
-            self.canvas.itemconfigure(self.stone[y][x], fill=color, outline=color) 
+            self.canvas.itemconfigure(self.stone[y][x], fill=color, outline=color)
 
     def show_board(self, board):
         # ボードの石の状況を表示する。
         self._allset_bgcolor(BG_COLOR)
-        for y in range(8):
-            for x in range(8):
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
+                if board[x][y] == BLACK:
+                    self.canvas.itemconfigure(self.stone[x][y], fill="black", outline="black")
+                elif board[x][y] == WHITE:
+                    self.canvas.itemconfigure(self.stone[x][y], fill="white", outline="black")
+
+    def show_animation(self, board):
+        # 順番に表示
+        if len(self.lboard) == 0:
+            self._cpboard(board)
+            self.show_board(board)
+            return 
+        self._allset_bgcolor(BG_COLOR)
+        show_list = self._create_list(board)
+        for a in show_list:
+            for b in a:
+                x, y = b[0], b[1]
                 if board[y][x] == BLACK:
                     self.canvas.itemconfigure(self.stone[y][x], fill="black", outline="black")
                 elif board[y][x] == WHITE:
                     self.canvas.itemconfigure(self.stone[y][x], fill="white", outline="black")
-                    
-              
+            time.sleep(0.1)
+    
+    def _create_list(self, board):
+        # 直前と変わったマスの座標をリストにして返却
+        a = self._where_put(board)
+        show_list = []
+        show_list.append([a])
+        self._set_bgcolor(a[1], a[0], SD_COLOR)
+        x, y = a[0], a[1]
+        size = max(x+1, BOARD_SIZE-x-1, y+1, BOARD_SIZE-y-1)
+        for s in range(1, size+1):
+            li = [[x+s, y], [x+s, y+s], [x, y+s], [x-s, y+s], [x-s, y], [x-s, y-s], [x, y-s], [x+s, y-s]]
+            li2 = []
+            for b in li:
+                if 0 <= b[0] < BOARD_SIZE and 0 <= b[1] < BOARD_SIZE:
+                    if self.lboard[b[1]][b[0]] != board[b[1]][b[0]]:
+                        li2.append(b)
+            if len(li2) == 0:
+                break
+            show_list.append(li2)
+        self._cpboard(board)
+        return show_list
+
+    def _where_put(self, board):
+        # 置いた場所を返す。
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                if self.lboard[i][j] == NONE and board[i][j] != NONE:
+                    return [j,i]
+
+    def _cpboard(self, board):
+        # boardをコピーする。
+        self.lboard = [[NONE for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
+                self.lboard[i][j] = board[i][j]
+
     def close(self):
         # ウィンドウを閉じる。
         self.master.destroy()
 
     def _close_message(self):
         # ウィンドウを閉じようとしたときに呼ばれるメソッド。
-        if messagebox.showinfo("Message", "プログラムを終了します。"):
+        if messagebox.askokcancel("Message", "プログラムを終了します。"):
+            self.closed = True
             self.close()
 
     def clean_board(self):
         """ボードを何もない状態にする。"""
-        for i in range(8):
-            for j in range(8):
+        self.lboard = []
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE):
                 self.canvas.itemconfigure(self.mas[i][j], fill=BG_COLOR)
                 self.canvas.itemconfigure(self.stone[i][j], fill=BG_COLOR, outline=BG_COLOR)
 
@@ -180,13 +244,16 @@ class othello_GUI(tk.Frame):
         """ウィンドウ下部に表示したい文章を入力する。クラス名.set_message("ここにメッセージを入力する。")"""
         self.msg.set(msg)
 
-    def show_put(self, valid_pos):
+    def show_valid_position(self, valid_pos):
         """石がおけるマスの色を変える。引数に「置ける場所リスト」を指定する。"""
-        for y in range(8):
-            for x in range(8):
+        self._allset_bgcolor(BG_COLOR)
+        for y in range(BOARD_SIZE):
+            for x in range(BOARD_SIZE):
                 if [x, y] in valid_pos:
+                    if [self.lmouse[0], self.lmouse[1]] in valid_pos:
+                        self.lmouse[2] = SD_COLOR
                     self._set_bgcolor(y, x, SD_COLOR)
-        
+
     def append_list(self, text):
         """リストの末尾に要素textを追加する。"""
         self.list_box.insert(tk.END, text)
@@ -197,7 +264,7 @@ class othello_GUI(tk.Frame):
         self.list_box.delete(0, tk.END)
 
 def game():
-    board = [[NONE for i in range(8)]for j in range(8)]
+    board = [[NONE for i in range(BOARD_SIZE)]for j in range(BOARD_SIZE)]
     board[3][3] = board[4][4] = WHITE
     board[4][3] = board[3][4] = BLACK
     # 石の表示を更新する。
@@ -215,14 +282,14 @@ def game():
     board[1][1] = BLACK
     # 石の表示を更新する。
     test.show_board(board)
-    pos = [[1,1], [2,3], [8, 5],[2,4]]
+    pos = [[1,1], [2,3], [BOARD_SIZE, 5],[2,4]]
     # 置ける場所の表示を更新する。
-    test.show_put(pos)
+    test.show_valid_position(pos)
     # マウス入力を待つ。
-    x, y = test.get_mouse()
+    x, y = test.user_input()
     # get_mouse()で返却される値。
     print(x, y)
-    test.get_mouse()
+    test.user_input()
     # リストの内容をすべて消去する。
     test.del_list()
     # ボードの石をすべて消す。

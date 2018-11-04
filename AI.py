@@ -2,7 +2,7 @@ import random
 from board import Board
 
 class RandomAI:
-    def move(self, board, color):
+    def move(self, board, color, GUI):
         return self.random_ai(board, color)
 
     def random_ai(self, board, color):
@@ -16,6 +16,6 @@ class RandomAI:
         # print('random-player ({},{})'.format(x, y))
         return x, y
 
-    def getGameResult(self, board, opponent_player):
+    def getGameResult(self, board, opponent_player, GUI):
         pass
 

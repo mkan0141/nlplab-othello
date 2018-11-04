@@ -3,7 +3,7 @@ import numpy as np
 NONE  = 0
 BLACK = 1
 WHITE = 2
-BOARD_SIZE = 4
+BOARD_SIZE = 8
 BOARD_HARF_SIZE = int(BOARD_SIZE / 2)
 dx = [0,1,1,1,0,-1,-1,-1]
 dy = [1,1,0,-1,-1,-1,0,1]
@@ -383,3 +383,6 @@ class Board():
             return BLACK
         elif w == b:
             self.is_win = NONE
+
+    def get_board(self):
+        return self.board

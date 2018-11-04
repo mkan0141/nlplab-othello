@@ -1,6 +1,7 @@
 from Quantity import Quantity
 from board import Board
 from copy import deepcopy, copy
+import AI as A
 
 import random
 
@@ -13,7 +14,7 @@ class QLearning():
         self.e = 0.2
         self.action_count = 0
 
-    def move(self, board, color):
+    def move(self, board, color, GUI):
         return self.policy(board, color)
 
 
@@ -41,12 +42,12 @@ class QLearning():
         return self.action
 
 
-    def getGameResult(self, _board, opponent_player):
+    def getGameResult(self, _board, opponent_player, GUI):
         board = deepcopy(_board)
         # print(board.get_color())
         # print('stone_nunm2: {}'.format(board.stone_num))
         # print('color: {}'.format(board.color))
-        x, y = opponent_player.move(board, board.get_color())
+        x, y = opponent_player.move(board, board.get_color(), 0)
 
         if x != 'pass':
             # print('reverse')
